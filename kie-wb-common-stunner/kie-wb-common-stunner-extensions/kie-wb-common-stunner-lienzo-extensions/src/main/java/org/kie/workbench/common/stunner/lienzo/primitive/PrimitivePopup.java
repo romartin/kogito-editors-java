@@ -18,7 +18,9 @@ package org.kie.workbench.common.stunner.lienzo.primitive;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
-import com.ait.lienzo.client.widget.LienzoPanel;
+import com.ait.lienzo.client.widget.panel.LienzoPanel;
+import com.ait.lienzo.client.widget.panel.impl.LienzoFixedPanel;
+import com.ait.lienzo.client.widget.panel.impl.LienzoPanelWidgetWrapper;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -26,7 +28,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class PrimitivePopup extends FlowPanel {
 
     protected Layer canvasLayer = new Layer();
-    protected LienzoPanel lienzoPanel;
+    protected LienzoPanelWidgetWrapper lienzoPanel;
     protected int zIndex = 20;
 
     public PrimitivePopup() {
@@ -42,8 +44,12 @@ public class PrimitivePopup extends FlowPanel {
                height,
                x,
                y);
-        lienzoPanel.draw();
+        draw();
         return this;
+    }
+
+    private void draw() {
+        lienzoPanel.getViewport().draw();
     }
 
     public PrimitivePopup show(final IPrimitive<?> _primitive,
@@ -56,7 +62,7 @@ public class PrimitivePopup extends FlowPanel {
                height,
                x,
                y);
-        lienzoPanel.draw();
+        draw();
         return this;
     }
 
@@ -66,10 +72,10 @@ public class PrimitivePopup extends FlowPanel {
                           final double x,
                           final double y) {
         reset();
-        lienzoPanel = new LienzoPanel((int) width,
-                                      (int) height);
-        this.add(lienzoPanel);
-        lienzoPanel.getScene().add(canvasLayer);
+        LienzoFixedPanel panelView = LienzoFixedPanel.newPanel((int) width, (int) height);
+        this.lienzoPanel = new LienzoPanelWidgetWrapper(panelView);
+        this.add(this.lienzoPanel);
+        this.lienzoPanel.add(canvasLayer);
         if (null != _primitive) {
             canvasLayer.add(_primitive);
         }

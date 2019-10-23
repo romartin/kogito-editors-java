@@ -18,8 +18,8 @@ package org.kie.workbench.common.stunner.shapes.client.view;
 import com.ait.lienzo.client.core.image.ImageProxy;
 import com.ait.lienzo.client.core.shape.Picture;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwtmockito.WithClassesToStub;
+import elemental2.dom.HTMLImageElement;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ public class PictureShapeViewTest {
     private ImageProxy imageProxy;
 
     @Mock
-    private ImageElement imageElement;
+    private HTMLImageElement imageElement;
 
     private PictureShapeView view;
 
@@ -61,6 +61,6 @@ public class PictureShapeViewTest {
         view.destroy();
 
         verify(picture).removeFromParent();
-        verify(imageElement).removeFromParent();
+        verify(imageElement).remove();
     }
 }

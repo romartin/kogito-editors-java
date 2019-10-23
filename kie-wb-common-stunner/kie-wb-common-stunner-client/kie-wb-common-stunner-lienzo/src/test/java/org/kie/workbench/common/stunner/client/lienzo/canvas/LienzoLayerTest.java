@@ -23,7 +23,7 @@ import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.OnLayerAfterDraw;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
-import com.ait.tooling.nativetools.client.collection.NFastArrayList;
+import com.ait.lienzo.tools.client.collection.NFastArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +85,7 @@ public class LienzoLayerTest {
 
     @Test
     public void testAddTwice() {
-        when(layer.getChildNodes()).thenReturn(new NFastArrayList<>(shape));
+        when(layer.getChildNodes()).thenReturn(NFastArrayList.fromObjects(shape));
         tested.add(shape);
         verify(layer, never()).add(eq(shape));
     }
@@ -150,7 +150,7 @@ public class LienzoLayerTest {
 
     @Test
     public void testGetScale() {
-        transform.scale(0.11, 0.666);
+        transform.scaleWithXY(0.11, 0.666);
         Point2D translate = tested.getScale();
         assertEquals(0.11d, translate.getX(), 0d);
         assertEquals(0.666d, translate.getY(), 0d);

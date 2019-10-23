@@ -47,7 +47,7 @@ public class LienzoPictureUtilsTest {
     public void setup() {
         //Fake image loading...
         when(picture.getImageProxy()).thenReturn(imageProxy);
-        when(imageProxy.getImage()).thenReturn(imageElement);
+        // TODO: lienzo-to-native  when(imageProxy.getImage()).thenReturn(imageElement);
     }
 
     @Test

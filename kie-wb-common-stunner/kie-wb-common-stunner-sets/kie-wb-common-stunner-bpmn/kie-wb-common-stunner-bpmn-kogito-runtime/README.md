@@ -44,11 +44,18 @@ VM Options:
         -Derrai.dynamic_validation.enabled=true
         -Derrai.ioc.jsinterop.support=true
     
-[OPTIONAL] Dev Mode Parameters:
-        
+Dev Mode Parameters:
+
+* MANDATORY
+
+        -generateJsInteropExports
+
+* [OPTIONAL] 
+
         -style PRETTY
         -generateJsInteropExports
         -logLevel [ERROR, WARN, INFO, TRACE, DEBUG, SPAM, or ALL]
+
 
 Start page: `test.html`
 

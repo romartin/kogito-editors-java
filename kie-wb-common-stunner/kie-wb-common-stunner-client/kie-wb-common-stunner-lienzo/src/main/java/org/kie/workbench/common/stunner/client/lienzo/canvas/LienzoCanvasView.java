@@ -16,7 +16,6 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.canvas;
 
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import com.ait.lienzo.client.core.shape.GridLayer;
@@ -47,17 +46,8 @@ public abstract class LienzoCanvasView<L extends LienzoLayer>
 
     @Override
     protected LienzoCanvasView<L> doInitialize(final CanvasSettings canvasSettings) {
-        final Optional<CanvasSettings.CanvasSize> canvasSize = canvasSettings.getCanvasSize();
-        if (canvasSize.isPresent()) {
-            getLienzoPanel()
-                    .show(getLayer(),
-                          canvasSize.get().getWidth(),
-                          canvasSize.get().getHeight());
-        } else {
-            getLienzoPanel()
-                    .show(getLayer());
-        }
         getLienzoPanel()
+                .show(getLayer())
                 .asWidget()
                 .getElement()
                 .getStyle()

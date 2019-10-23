@@ -33,7 +33,7 @@ import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.impl.WiresShapeControlImpl;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
-import com.ait.tooling.nativetools.client.collection.NFastArrayList;
+import com.ait.lienzo.tools.client.collection.NFastArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,7 +97,6 @@ public class WiresShapeViewTest {
         assertEquals(321.65,
                      tested.getShapeY(),
                      0d);
-        // TODO verify call to shapeMoved()
     }
 
     @Test
@@ -202,8 +201,8 @@ public class WiresShapeViewTest {
         final WiresMagnet magnet2 = mock(WiresMagnet.class);
         final WiresConnection connection1 = mock(WiresConnection.class);
         final WiresConnection connection2 = mock(WiresConnection.class);
-        final NFastArrayList<WiresConnection> connections1 = new NFastArrayList<WiresConnection>().add(connection1);
-        final NFastArrayList<WiresConnection> connections2 = new NFastArrayList<WiresConnection>().add(connection2);
+        final NFastArrayList<WiresConnection> connections1 = NFastArrayList.fromObjects(connection1);
+        final NFastArrayList<WiresConnection> connections2 = NFastArrayList.fromObjects(connection2);
         when(magnets1.size()).thenReturn(1);
         when(magnets1.getMagnet(eq(0))).thenReturn(magnet1);
         when(magnets2.size()).thenReturn(1);

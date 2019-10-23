@@ -16,7 +16,6 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.canvas;
 
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
@@ -76,7 +75,6 @@ public class LienzoCanvasViewTest {
         when(panel.asWidget()).thenReturn(panelWidget);
         when(panelWidget.getElement()).thenReturn(panelElement);
         when(panelElement.getStyle()).thenReturn(panelStyle);
-        when(settings.getCanvasSize()).thenReturn(Optional.empty());
         when(lienzoLayer.getTopLayer()).thenReturn(topLayer);
         this.tested = new LienzoCanvasViewStub(decoratorFactory);
     }

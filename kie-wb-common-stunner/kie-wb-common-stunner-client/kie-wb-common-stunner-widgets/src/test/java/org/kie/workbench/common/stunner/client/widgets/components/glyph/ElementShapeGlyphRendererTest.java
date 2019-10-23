@@ -19,8 +19,8 @@ package org.kie.workbench.common.stunner.client.widgets.components.glyph;
 import java.util.function.Supplier;
 
 import com.ait.lienzo.client.core.shape.Group;
-import com.ait.lienzo.client.widget.LienzoPanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import com.google.gwt.user.client.ui.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class ElementShapeGlyphRendererTest {
     private ElementShapeGlyphRenderer tested;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         when(viewSupplier.get()).thenReturn(view);
         when(lienzoShapeGlyphRenderer.render(any(ShapeGlyph.class),
                                              anyDouble(),
@@ -85,7 +85,7 @@ public class ElementShapeGlyphRendererTest {
                                 eq(100d),
                                 eq(200d));
         verify(view,
-               times(1)).setWidget(any(LienzoPanel.class));
+               times(1)).setWidget(any(Widget.class));
     }
 
     @Test
