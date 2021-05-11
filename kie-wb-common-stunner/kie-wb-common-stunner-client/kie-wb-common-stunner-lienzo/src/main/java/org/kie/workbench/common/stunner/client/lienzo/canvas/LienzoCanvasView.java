@@ -20,6 +20,7 @@ import java.util.function.BiFunction;
 
 import com.ait.lienzo.client.core.shape.GridLayer;
 import com.ait.lienzo.client.core.shape.IPrimitive;
+import com.ait.lienzo.client.core.util.CursorMap;
 import org.kie.workbench.common.stunner.core.client.canvas.AbstractCanvas;
 import org.kie.workbench.common.stunner.core.client.canvas.AbstractCanvasView;
 import org.kie.workbench.common.stunner.core.client.canvas.CanvasGrid;
@@ -72,7 +73,7 @@ public abstract class LienzoCanvasView<L extends LienzoLayer>
 
     @Override
     protected void setViewCursor(final AbstractCanvas.Cursors cursor) {
-        getLienzoPanel().getView().setCursor(toViewCursor(cursor));
+        getLienzoPanel().getView().setCursor(CursorMap.get().lookup(toViewCursor(cursor).getCssName()));
         super.setViewCursor(cursor);
     }
 

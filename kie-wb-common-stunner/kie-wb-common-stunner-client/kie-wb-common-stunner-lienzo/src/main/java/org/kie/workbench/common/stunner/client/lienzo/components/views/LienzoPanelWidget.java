@@ -18,9 +18,9 @@ package org.kie.workbench.common.stunner.client.lienzo.components.views;
 
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Viewport;
+import com.ait.lienzo.client.core.style.Style;
 import com.ait.lienzo.client.widget.panel.LienzoPanel;
 import com.ait.lienzo.client.widget.panel.impl.LienzoFixedPanel;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import elemental2.dom.HTMLDivElement;

@@ -20,6 +20,7 @@ import java.util.function.BiFunction;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
+import com.ait.lienzo.client.core.util.CursorMap;
 import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import com.google.gwt.dom.client.Style;
@@ -101,7 +102,9 @@ public class LienzoCanvasViewTest {
         when(panel.getView()).thenReturn(panelView);
         tested.initialize(panel, settings);
         tested.setCursor(AbstractCanvas.Cursors.MOVE);
-        verify(panelView, times(1)).setCursor(eq(Style.Cursor.MOVE));
+        verify(panelView, times(1))
+                .setCursor(eq(CursorMap.get().lookup(Style.Cursor.MOVE.getCssName())));
+
     }
 
     @Test
