@@ -129,7 +129,7 @@ public class GridWidgetDnDMouseDownHandlerTest {
     public void setup() {
         when(gridLayer.getLayer()).thenReturn(layer);
         when(gridLayer.getViewport()).thenReturn(viewport);
-        when(viewport.getElement()).thenReturn(element);
+        // TODO when(viewport.getElement()).thenReturn(element);
         when(element.getStyle()).thenReturn(style);
         when(gridWidget.getViewport()).thenReturn(viewport);
         when(gridWidget.getRenderer()).thenReturn(gridRenderer);

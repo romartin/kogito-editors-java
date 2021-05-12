@@ -21,12 +21,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.ait.lienzo.client.core.event.INodeXYEvent;
 import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.Mediators;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import com.ait.lienzo.tools.client.event.INodeXYEvent;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style;
 import org.junit.Before;
@@ -140,7 +140,7 @@ public class GridWidgetDnDMouseMoveHandlerTest {
         when(renderer.getHeaderRowHeight()).thenReturn(32.0);
 
         when(layer.getViewport()).thenReturn(viewport);
-        when(viewport.getElement()).thenReturn(element);
+        // TODO when(viewport.getElement()).thenReturn(element);
         when(viewport.getMediators()).thenReturn(mediators);
         when(element.getStyle()).thenReturn(style);
         when(gridWidget.getModel()).thenReturn(uiModel);

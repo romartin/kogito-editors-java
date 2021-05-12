@@ -61,7 +61,7 @@ public class GridWidgetDnDMouseUpHandlerTest {
     @Before
     public void setup() {
         when(layer.getViewport()).thenReturn(viewport);
-        when(viewport.getElement()).thenReturn(element);
+        // TODO when(viewport.getElement()).thenReturn(element);
         when(element.getStyle()).thenReturn(style);
 
         final GridWidgetDnDHandlersState wrappedState = new GridWidgetDnDHandlersState();
