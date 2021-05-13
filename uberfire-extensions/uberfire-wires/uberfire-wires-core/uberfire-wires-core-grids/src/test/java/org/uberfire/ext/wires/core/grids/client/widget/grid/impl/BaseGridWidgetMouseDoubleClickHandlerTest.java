@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
-import com.ait.lienzo.client.core.event.AbstractNodeMouseEvent;
+import com.ait.lienzo.client.core.event.AbstractNodeHumanInputEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Viewport;
@@ -91,7 +91,7 @@ public abstract class BaseGridWidgetMouseDoubleClickHandlerTest {
 
     @Before
     public void setup() {
-        this.event = new NodeMouseDoubleClickEvent(doubleClickEvent);
+        // TODO this.event = new NodeMouseDoubleClickEvent(doubleClickEvent);
 
         when(gridWidget.getViewport()).thenReturn(viewport);
         when(gridWidget.getModel()).thenReturn(uiModel);
@@ -150,6 +150,6 @@ public abstract class BaseGridWidgetMouseDoubleClickHandlerTest {
                                          any(Optional.class),
                                          any(Optional.class),
                                          any(Optional.class),
-                                         any(AbstractNodeMouseEvent.class));
+                                         any(AbstractNodeHumanInputEvent.class));
     }
 }

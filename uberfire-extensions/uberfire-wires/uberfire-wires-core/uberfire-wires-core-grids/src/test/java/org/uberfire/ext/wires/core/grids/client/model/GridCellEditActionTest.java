@@ -50,9 +50,9 @@ public class GridCellEditActionTest {
 
     @Before
     public void setup() {
-        this.nodeMouseClickEvent = new NodeMouseClickEvent(clickEvent);
-        this.nodeMouseDoubleClickEvent = new NodeMouseDoubleClickEvent(doubleClickEvent);
-        this.nodeMouseWheelEvent = new NodeMouseWheelEvent(mouseWheelEvent);
+        // TODO this.nodeMouseClickEvent = new NodeMouseClickEvent(clickEvent);
+        // TODO this.nodeMouseDoubleClickEvent = new NodeMouseDoubleClickEvent(doubleClickEvent);
+        // TODO this.nodeMouseWheelEvent = new NodeMouseWheelEvent(mouseWheelEvent);
     }
 
     @Test

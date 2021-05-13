@@ -15,7 +15,6 @@
  */
 package org.kie.workbench.common.dmn.client.resources.images;
 
-import com.ait.lienzo.client.core.shape.Attributes;
 import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
@@ -40,8 +39,8 @@ public class DMNDecisionServiceSVGViewFactoryBuilderTest {
     @Mock
     private Shape shape;
 
-    @Mock
-    private Attributes shapeAttributes;
+    // TODO @Mock
+    // TODO private Attributes shapeAttributes;
 
     @Mock
     private Node shapeNode;
@@ -52,7 +51,7 @@ public class DMNDecisionServiceSVGViewFactoryBuilderTest {
     @SuppressWarnings("unchecked")
     public void setup() {
         when(svgPrimitiveShape.get()).thenReturn(shape);
-        when(shape.getAttributes()).thenReturn(shapeAttributes);
+        // TODO when(shape.getAttributes()).thenReturn(shapeAttributes);
         when(shape.asNode()).thenReturn(shapeNode);
 
         this.builder = new DMNDecisionServiceSVGViewFactoryBuilder();

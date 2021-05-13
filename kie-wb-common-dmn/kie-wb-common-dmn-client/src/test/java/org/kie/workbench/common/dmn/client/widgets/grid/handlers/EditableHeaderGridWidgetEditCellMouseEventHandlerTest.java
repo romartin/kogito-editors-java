@@ -123,8 +123,8 @@ public class EditableHeaderGridWidgetEditCellMouseEventHandlerTest {
     public void setup() {
         this.uiModel = new BaseGridData(false);
         this.uiModel.appendColumn(gridColumn);
-        this.clickEvent = new NodeMouseClickEvent(nativeClickEvent);
-        this.doubleClickEvent = new NodeMouseDoubleClickEvent(nativeDoubleClickEvent);
+        // TODO this.clickEvent = new NodeMouseClickEvent(nativeClickEvent);
+        // TODO this.doubleClickEvent = new NodeMouseDoubleClickEvent(nativeDoubleClickEvent);
 
         when(gridWidget.getModel()).thenReturn(uiModel);
         when(gridWidget.getRendererHelper()).thenReturn(rendererHelper);

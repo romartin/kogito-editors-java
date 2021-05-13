@@ -17,7 +17,7 @@
 package org.kie.workbench.common.dmn.client.widgets.panel;
 
 import com.ait.lienzo.client.core.Context2D;
-import com.ait.lienzo.client.core.INativeContext2D;
+import com.ait.lienzo.client.core.NativeContext2D;
 import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Transform;
@@ -68,7 +68,7 @@ public class DMNGridPanelTest {
     private Context2D context2D;
 
     @Mock
-    private INativeContext2D nativeContext2D;
+    private NativeContext2D nativeContext2D;
 
     @Mock
     private RestrictedMousePanMediator mousePanMediator;
@@ -93,9 +93,9 @@ public class DMNGridPanelTest {
     @Before
     @SuppressWarnings("unchecked")
     public void setup() {
-        when(gridLayer.getElement()).thenReturn(gridLayerDivElement);
+        // TODO when(gridLayer.getElement()).thenReturn(gridLayerDivElement);
         when(gridLayerDivElement.getStyle()).thenReturn(gridLayerDivElementStyle);
-        when(gridLayer.getCanvasElement()).thenReturn(gridLayerCanvasElement);
+        // TODO when(gridLayer.getCanvasElement()).thenReturn(gridLayerCanvasElement);
         when(gridLayer.getContext()).thenReturn(context2D);
         when(gridLayer.asNode()).thenReturn(gridLayerNode);
         when(context2D.getNativeContext()).thenReturn(nativeContext2D);
