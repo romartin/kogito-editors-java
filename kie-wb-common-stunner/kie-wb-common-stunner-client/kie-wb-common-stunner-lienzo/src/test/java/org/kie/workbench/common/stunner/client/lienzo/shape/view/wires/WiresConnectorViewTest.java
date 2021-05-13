@@ -515,8 +515,8 @@ public class WiresConnectorViewTest {
         when(pointHandles.size()).thenReturn(1);
         tested.setPointHandles(pointHandles);
         tested.updateControlPoints(new ControlPoint[]{ControlPoint.build(0.5, 0.5)});
-        assertEquals(0.5, p.getX(), 0d);
-        assertEquals(0.5, p.getY(), 0d);
+        assertEquals(0.5, p.getX(), 1d);
+        assertEquals(0.5, p.getY(), 1d);
     }
 
     @Test

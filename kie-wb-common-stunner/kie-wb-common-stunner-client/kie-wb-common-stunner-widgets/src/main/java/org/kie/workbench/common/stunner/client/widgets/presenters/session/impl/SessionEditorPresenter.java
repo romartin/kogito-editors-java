@@ -186,6 +186,6 @@ public class SessionEditorPresenter<S extends EditorSession>
 
     @Override
     public void open(S item, int width, int height, SessionPresenterCallback<Diagram> callback) {
-        // TODO lienzo-native
+        // TODO: lienzo-native
     }
 }

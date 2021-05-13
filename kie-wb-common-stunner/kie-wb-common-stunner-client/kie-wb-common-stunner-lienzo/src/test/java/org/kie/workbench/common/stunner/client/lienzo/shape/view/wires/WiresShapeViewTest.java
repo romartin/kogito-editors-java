@@ -201,8 +201,12 @@ public class WiresShapeViewTest {
         final WiresMagnet magnet2 = mock(WiresMagnet.class);
         final WiresConnection connection1 = mock(WiresConnection.class);
         final WiresConnection connection2 = mock(WiresConnection.class);
-        final NFastArrayList<WiresConnection> connections1 = NFastArrayList.fromObjects(connection1);
-        final NFastArrayList<WiresConnection> connections2 = NFastArrayList.fromObjects(connection2);
+        NFastArrayList<WiresConnection> conn1NFastArrayList = new NFastArrayList<>();
+        conn1NFastArrayList.add(connection1);
+        NFastArrayList<WiresConnection> conn2NFastArrayList = new NFastArrayList<>();
+        conn2NFastArrayList.add(connection2);
+        final NFastArrayList<WiresConnection> connections1 = conn1NFastArrayList;
+        final NFastArrayList<WiresConnection> connections2 = conn2NFastArrayList;
         when(magnets1.size()).thenReturn(1);
         when(magnets1.getMagnet(eq(0))).thenReturn(magnet1);
         when(magnets2.size()).thenReturn(1);

@@ -53,7 +53,7 @@ package org.kie.workbench.common.stunner.client.lienzo.components.toolbox.action
 //import static org.mockito.Mockito.when;
 
 public abstract class AbstractActionsToolboxViewTest {
-    // TODO lienzo-native
+    // TODO: lienzo-native
 //    protected ToolboxFactory toolboxFactory;
 //    protected ButtonsFactory buttonsFactory;
 //    protected TooltipFactory tooltipFactory;

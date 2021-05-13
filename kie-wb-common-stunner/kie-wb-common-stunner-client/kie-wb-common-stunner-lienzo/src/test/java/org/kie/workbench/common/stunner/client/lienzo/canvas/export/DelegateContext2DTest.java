@@ -51,6 +51,7 @@ import org.mockito.Mockito;
 import org.uberfire.ext.editor.commons.client.file.exports.svg.IContext2D;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -189,16 +190,16 @@ public class DelegateContext2DTest {
 
     @Test
     public void moveTo() {
-        doCallRealMethod().when(delegateContext2D).moveTo(anyInt(), anyInt());
-        delegateContext2D.moveTo(1, 1);
-        verify(context, times(1)).moveTo(1, 1);
+        doCallRealMethod().when(delegateContext2D).moveTo(anyDouble(), anyDouble());
+        delegateContext2D.moveTo(1d, 1d);
+        verify(context, times(1)).moveTo(1d, 1d);
     }
 
     @Test
     public void lineTo() {
-        doCallRealMethod().when(delegateContext2D).lineTo(anyInt(), anyInt());
-        delegateContext2D.lineTo(1, 1);
-        verify(context, times(1)).lineTo(1, 1);
+        doCallRealMethod().when(delegateContext2D).lineTo(anyDouble(), anyDouble());
+        delegateContext2D.lineTo(1d, 1d);
+        verify(context, times(1)).lineTo(1d ,1d);
     }
 
     @Test
@@ -225,86 +226,86 @@ public class DelegateContext2DTest {
 
     @Test
     public void quadraticCurveTo() {
-        doCallRealMethod().when(delegateContext2D).quadraticCurveTo(anyInt(), anyInt(), anyInt(), anyInt());
-        delegateContext2D.quadraticCurveTo(1, 1, 1, 1);
-        verify(context, times(1)).quadraticCurveTo(1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).quadraticCurveTo(anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        delegateContext2D.quadraticCurveTo(1d, 1d, 1d, 1d);
+        verify(context, times(1)).quadraticCurveTo(1d, 1d, 1d, 1d);
     }
 
     @Test
     public void arc() {
-        doCallRealMethod().when(delegateContext2D).arc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt());
-        delegateContext2D.arc(1, 1, 1, 1, 1);
-        verify(context, times(1)).arc(1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).arc(anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        delegateContext2D.arc(1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).arc(1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void arc1() {
-        doCallRealMethod().when(delegateContext2D).arc(anyInt(),
-                                                       anyInt(),
-                                                       anyInt(),
-                                                       anyInt(),
-                                                       anyInt(),
+        doCallRealMethod().when(delegateContext2D).arc(anyDouble(),
+                                                       anyDouble(),
+                                                       anyDouble(),
+                                                       anyDouble(),
+                                                       anyDouble(),
                                                        anyBoolean());
-        delegateContext2D.arc(1, 1, 1, 1, 1, true);
+        delegateContext2D.arc(1d, 1d, 1d, 1d, 1d, true);
         verify(context, times(1))
-                .arc(1, 1, 1, 1, 1, true);
+                .arc(1d, 1d, 1d, 1d, 1d, true);
     }
 
     @Test
     public void ellipse() {
-        doCallRealMethod().when(delegateContext2D).ellipse(anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt());
-        delegateContext2D.ellipse(1, 1, 1, 1, 1, 1, 1);
-        verify(context, times(1)).ellipse(1, 1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).ellipse(anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble());
+        delegateContext2D.ellipse(1d, 1d, 1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).ellipse(1d, 1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void ellipse1() {
-        doCallRealMethod().when(delegateContext2D).ellipse(anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
-                                                           anyInt(),
+        doCallRealMethod().when(delegateContext2D).ellipse(anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
+                                                           anyDouble(),
                                                            anyBoolean());
-        delegateContext2D.ellipse(1, 1, 1, 1, 1, 1, 1, true);
-        verify(context, times(1)).ellipse(1, 1, 1, 1, 1, 1, 1, true);
+        delegateContext2D.ellipse(1d, 1d, 1d, 1d, 1d, 1d, 1d, true);
+        verify(context, times(1)).ellipse(1d, 1d, 1d, 1d, 1d, 1d, 1d, true);
     }
 
     @Test
     public void arcTo() {
-        doCallRealMethod().when(delegateContext2D).arcTo(anyInt(),
-                                                         anyInt(),
-                                                         anyInt(),
-                                                         anyInt(),
-                                                         anyInt());
-        delegateContext2D.arcTo(1, 1, 1, 1, 1);
-        verify(context, times(1)).arcTo(1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).arcTo(anyDouble(),
+                                                         anyDouble(),
+                                                         anyDouble(),
+                                                         anyDouble(),
+                                                         anyDouble());
+        delegateContext2D.arcTo(1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).arcTo(1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void bezierCurveTo() {
-        doCallRealMethod().when(delegateContext2D).bezierCurveTo(anyInt(),
-                                                                 anyInt(),
-                                                                 anyInt(),
-                                                                 anyInt(),
-                                                                 anyInt(),
-                                                                 anyInt());
-        delegateContext2D.bezierCurveTo(1, 1, 1, 1, 1, 1);
-        verify(context, times(1)).bezierCurveTo(1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).bezierCurveTo(anyDouble(),
+                                                                 anyDouble(),
+                                                                 anyDouble(),
+                                                                 anyDouble(),
+                                                                 anyDouble(),
+                                                                 anyDouble());
+        delegateContext2D.bezierCurveTo(1d, 1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).bezierCurveTo(1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void clearRect() {
-        doCallRealMethod().when(delegateContext2D).clearRect(anyInt(), anyInt(), anyInt(), anyInt());
-        delegateContext2D.clearRect(1, 1, 1, 1);
-        verify(context, times(1)).clearRect(1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).clearRect(anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        delegateContext2D.clearRect(1d, 1d, 1d, 1d);
+        verify(context, times(1)).clearRect(1d, 1d, 1d, 1d);
     }
 
     @Test
@@ -337,36 +338,36 @@ public class DelegateContext2DTest {
 
     @Test
     public void fillRect() {
-        doCallRealMethod().when(delegateContext2D).fillRect(anyInt(), anyInt(), anyInt(), anyInt());
-        delegateContext2D.fillRect(1, 1, 1, 1);
-        verify(context, times(1)).fillRect(1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).fillRect(anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        delegateContext2D.fillRect(1d, 1d, 1d, 1d);
+        verify(context, times(1)).fillRect(1d, 1d, 1d, 1d);
     }
 
     @Test
     public void fillText() {
-        doCallRealMethod().when(delegateContext2D).fillText(anyString(), anyInt(), anyInt());
-        delegateContext2D.fillText("text", 1, 1);
-        verify(context, times(1)).fillText("text", 1, 1);
+        doCallRealMethod().when(delegateContext2D).fillText(anyString(), anyDouble(), anyDouble());
+        delegateContext2D.fillText("text", 1d, 1d);
+        verify(context, times(1)).fillText("text", 1d, 1d);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void fillTextWithGradient() {
         doCallRealMethod().when(delegateContext2D).fillTextWithGradient(anyString(),
-                                                                        anyInt(),
-                                                                        anyInt(),
-                                                                        anyInt(),
-                                                                        anyInt(),
-                                                                        anyInt(),
-                                                                        anyInt(),
+                                                                        anyDouble(),
+                                                                        anyDouble(),
+                                                                        anyDouble(),
+                                                                        anyDouble(),
+                                                                        anyDouble(),
+                                                                        anyDouble(),
                                                                         anyString());
-        delegateContext2D.fillTextWithGradient("text", 1, 1, 1, 1, 1, 1, "black");
+        delegateContext2D.fillTextWithGradient("text", 1d, 1d, 1d, 1d, 1d, 1d, "black");
     }
 
     @Test
     public void fillText1() {
-        doCallRealMethod().when(delegateContext2D).fillText(anyString(), anyInt(), anyInt());
-        delegateContext2D.fillText("text", 1, 1);
-        verify(context, times(1)).fillText("text", 1, 1);
+        doCallRealMethod().when(delegateContext2D).fillText(anyString(), anyDouble(), anyDouble());
+        delegateContext2D.fillText("text", 1d, 1d);
+        verify(context, times(1)).fillText("text", 1d, 1d);
     }
 
     @Test
@@ -378,23 +379,23 @@ public class DelegateContext2DTest {
 
     @Test
     public void rect() {
-        doCallRealMethod().when(delegateContext2D).rect(anyInt(), anyInt(), anyInt(), anyInt());
-        delegateContext2D.rect(1, 1, 1, 1);
-        verify(context, times(1)).rect(1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).rect(anyDouble(), anyDouble(), anyDouble(), anyDouble());
+        delegateContext2D.rect(1d, 1d, 1d, 1d);
+        verify(context, times(1)).rect(1d, 1d, 1d, 1d);
     }
 
     @Test
     public void rotate() {
-        doCallRealMethod().when(delegateContext2D).rotate(anyInt());
-        delegateContext2D.rotate(1);
-        verify(context, times(1)).rotate(1);
+        doCallRealMethod().when(delegateContext2D).rotate(anyDouble());
+        delegateContext2D.rotate(1d);
+        verify(context, times(1)).rotate(1d);
     }
 
     @Test
     public void scale() {
-        doCallRealMethod().when(delegateContext2D).scale(anyInt(), anyInt());
-        delegateContext2D.scale(1, 1);
-        verify(context, times(1)).scale(1, 1);
+        doCallRealMethod().when(delegateContext2D).scale(anyDouble(), anyDouble());
+        delegateContext2D.scale(1d, 1d);
+        verify(context, times(1)).scale(1d, 1d);
     }
 
     @Test
@@ -406,11 +407,13 @@ public class DelegateContext2DTest {
 
     @Test
     public void setStrokeWidth() {
-        doCallRealMethod().when(delegateContext2D).setStrokeWidth(anyInt());
-        delegateContext2D.setStrokeWidth(1);
-        verify(context, times(1)).setLineWidth(1);
+        doCallRealMethod().when(delegateContext2D).setStrokeWidth(anyDouble());
+        delegateContext2D.setStrokeWidth(1d);
+        verify(context, times(1)).setLineWidth(1d);
     }
 
+    // TODO: lienzo-native
+    /*
     @Test
     public void setFillGradientLinear() {
         doCallRealMethod().when(delegateContext2D).setFillGradient(any(LinearGradient.class));
@@ -431,71 +434,71 @@ public class DelegateContext2DTest {
     public void setFillGradientPattern() {
         doCallRealMethod().when(delegateContext2D).setFillGradient(any(PatternGradient.class));
         doCallRealMethod().when(delegateContext2D).setFillColor(anyString());
-        delegateContext2D.setFillGradient(new PatternGradient(patternGradientJSO));
         verify(context, times(1)).setFillStyle(null);
     }
+   */
 
     @Test
     public void transform() {
-        doCallRealMethod().when(delegateContext2D).transform(anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt());
-        delegateContext2D.transform(1, 1, 1, 1, 1, 1);
-        verify(context, times(1)).transform(1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).transform(anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble());
+        delegateContext2D.transform(1d, 1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).transform(1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void transform1() {
         doCallRealMethod().when(delegateContext2D).transform(any(Transform.class));
-        doCallRealMethod().when(delegateContext2D).transform(anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt(),
-                                                             anyInt());
-        delegateContext2D.transform(Transform.makeFromArray(new double[]{1, 1, 1, 1, 1, 1}));
-        verify(context, times(1)).transform(1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).transform(anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble(),
+                                                             anyDouble());
+        delegateContext2D.transform(Transform.makeFromArray(new double[]{1d, 1d, 1d, 1d, 1d, 1d}));
+        verify(context, times(1)).transform(1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void setTransform() {
         doCallRealMethod().when(delegateContext2D).setTransform(any(Transform.class));
-        doCallRealMethod().when(delegateContext2D).setTransform(anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt());
-        delegateContext2D.setTransform(Transform.makeFromArray(new double[]{1, 1, 1, 1, 1, 1}));
-        verify(context, times(1)).setTransform(1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).setTransform(anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble());
+        delegateContext2D.setTransform(Transform.makeFromArray(new double[]{1d, 1d, 1d, 1d, 1d, 1d}));
+        verify(context, times(1)).setTransform(1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void setTransform1() {
-        doCallRealMethod().when(delegateContext2D).setTransform(anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt());
-        delegateContext2D.setTransform(1, 1, 1, 1, 1, 1);
-        verify(context, times(1)).setTransform(1, 1, 1, 1, 1, 1);
+        doCallRealMethod().when(delegateContext2D).setTransform(anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble());
+        delegateContext2D.setTransform(1d, 1d, 1d, 1d, 1d, 1d);
+        verify(context, times(1)).setTransform(1d, 1d, 1d, 1d, 1d, 1d);
     }
 
     @Test
     public void setToIdentityTransform() {
         doCallRealMethod().when(delegateContext2D).setToIdentityTransform();
-        doCallRealMethod().when(delegateContext2D).setTransform(anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt(),
-                                                                anyInt());
+        doCallRealMethod().when(delegateContext2D).setTransform(anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble(),
+                                                                anyDouble());
         delegateContext2D.setToIdentityTransform();
-        verify(context, times(1)).setTransform(1, 0, 0, 1, 0, 0);
+        verify(context, times(1)).setTransform(1d, 0d, 0d, 1d, 0d, 0d);
     }
 
     @Test
@@ -521,23 +524,23 @@ public class DelegateContext2DTest {
 
     @Test
     public void strokeText() {
-        doCallRealMethod().when(delegateContext2D).strokeText(anyString(), anyInt(), anyInt());
-        delegateContext2D.strokeText("text", 1, 1);
-        verify(context, times(1)).strokeText("text", 1, 1);
+        doCallRealMethod().when(delegateContext2D).strokeText(anyString(), anyDouble(), anyDouble());
+        delegateContext2D.strokeText("text", 1d, 1d);
+        verify(context, times(1)).strokeText("text", 1d, 1d);
     }
 
     @Test
     public void setGlobalAlpha() {
-        doCallRealMethod().when(delegateContext2D).setGlobalAlpha(anyInt());
-        delegateContext2D.setGlobalAlpha(1);
-        verify(context, times(1)).setGlobalAlpha(1);
+        doCallRealMethod().when(delegateContext2D).setGlobalAlpha(anyDouble());
+        delegateContext2D.setGlobalAlpha(1d);
+        verify(context, times(1)).setGlobalAlpha(1d);
     }
 
     @Test
     public void translate() {
-        doCallRealMethod().when(delegateContext2D).translate(anyInt(), anyInt());
-        delegateContext2D.translate(1, 1);
-        verify(context, times(1)).translate(1, 1);
+        doCallRealMethod().when(delegateContext2D).translate(anyDouble(), anyDouble());
+        delegateContext2D.translate(1d, 1d);
+        verify(context, times(1)).translate(1d, 1d);
     }
 
     @Test
@@ -545,8 +548,8 @@ public class DelegateContext2DTest {
         doCallRealMethod().when(delegateContext2D).setShadow(null);
         delegateContext2D.setShadow(null);
         verify(context).setShadowColor(Mockito.anyString());
-        verify(context).setShadowOffsetX(Mockito.anyInt());
-        verify(context).setShadowOffsetY(Mockito.anyInt());
+        verify(context).setShadowOffsetX(Mockito.anyDouble());
+        verify(context).setShadowOffsetY(Mockito.anyDouble());
         verify(context).setShadowBlur(Mockito.anyInt());
 
         delegateContext2D.setShadow(null);
@@ -560,9 +563,9 @@ public class DelegateContext2DTest {
 
     @Test
     public void isPointInPath() {
-        doCallRealMethod().when(delegateContext2D).isPointInPath(anyInt(), anyInt());
-        delegateContext2D.isPointInPath(1, 1);
-        verify(context, times(1)).isPointInPath(1, 1);
+        doCallRealMethod().when(delegateContext2D).isPointInPath(anyDouble(), anyDouble());
+        delegateContext2D.isPointInPath(1d, 1d);
+        verify(context, times(1)).isPointInPath(1d, 1d);
     }
 
     @Test
@@ -616,9 +619,9 @@ public class DelegateContext2DTest {
 
     @Test
     public void setMiterLimit() {
-        doCallRealMethod().when(delegateContext2D).setMiterLimit(anyInt());
-        delegateContext2D.setMiterLimit(1);
-        verify(context, times(1)).setMiterLimit(1);
+        doCallRealMethod().when(delegateContext2D).setMiterLimit(anyDouble());
+        delegateContext2D.setMiterLimit(1d);
+        verify(context, times(1)).setMiterLimit(1d);
     }
 
     @Test
@@ -630,9 +633,9 @@ public class DelegateContext2DTest {
 
     @Test
     public void setLineDashOffset() {
-        doCallRealMethod().when(delegateContext2D).setLineDashOffset(anyInt());
-        delegateContext2D.setLineDashOffset(1);
-        verify(context, times(1)).setLineDashOffset(1);
+        doCallRealMethod().when(delegateContext2D).setLineDashOffset(anyDouble());
+        delegateContext2D.setLineDashOffset(1d);
+        verify(context, times(1)).setLineDashOffset(1d);
     }
 
     @Test

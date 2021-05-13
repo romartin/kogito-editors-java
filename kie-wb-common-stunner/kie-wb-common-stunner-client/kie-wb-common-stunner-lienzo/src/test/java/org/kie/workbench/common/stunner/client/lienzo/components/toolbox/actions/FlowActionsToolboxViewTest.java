@@ -33,7 +33,7 @@ package org.kie.workbench.common.stunner.client.lienzo.components.toolbox.action
 //import static org.mockito.Mockito.verify;
 //import static org.mockito.Mockito.when;
 
-// TODO lienzo-native: @RunWith(LienzoMockitoTestRunner.class)
+// TODO: lienzo-native @RunWith(LienzoMockitoTestRunner.class)
 public class FlowActionsToolboxViewTest
         extends AbstractActionsToolboxViewTest {
 

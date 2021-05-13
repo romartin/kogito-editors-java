@@ -83,9 +83,12 @@ public class LienzoLayerTest {
         verify(scene, times(1)).add(eq(emptyLayer));
     }
 
+
     @Test
     public void testAddTwice() {
-        when(layer.getChildNodes()).thenReturn(NFastArrayList.fromObjects(shape));
+        final NFastArrayList<IPrimitive<?>> nFastArrayList = new NFastArrayList<>();
+        nFastArrayList.add(shape);
+        when(layer.getChildNodes()).thenReturn(nFastArrayList);
         tested.add(shape);
         verify(layer, never()).add(eq(shape));
     }

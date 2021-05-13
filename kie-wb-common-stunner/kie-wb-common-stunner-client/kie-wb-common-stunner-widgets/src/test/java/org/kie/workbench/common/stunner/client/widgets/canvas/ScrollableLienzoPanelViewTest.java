@@ -15,17 +15,24 @@
  */
 
 package org.kie.workbench.common.stunner.client.widgets.canvas;
-
+/*
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.spy;
 
-@RunWith(LienzoMockitoTestRunner.class)
-public class ScrollableLienzoPanelViewTest {
+ */
 
+// TODO: lienzo-to-native @RunWith(LienzoMockitoTestRunner.class)
+public class ScrollableLienzoPanelViewTest {
+/*
     @Mock
     private StunnerLienzoBoundsPanel presenter;
 
@@ -37,8 +44,8 @@ public class ScrollableLienzoPanelViewTest {
         tested = spy(new ScrollableLienzoPanelView());
     }
 
-    // TODO: lienzo-to-native
-    /*@Test
+
+    @Test
     @SuppressWarnings("unchecked")
     public void testSetPresenter() {
         when(tested.isRemoteCommunicationEnabled()).thenReturn(true);

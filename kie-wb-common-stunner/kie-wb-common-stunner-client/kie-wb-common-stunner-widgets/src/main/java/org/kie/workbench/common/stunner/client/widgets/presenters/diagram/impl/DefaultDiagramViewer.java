@@ -138,7 +138,7 @@ public class DefaultDiagramViewer
 
     @Override
     public void open(Diagram item, int width, int height, DiagramViewerCallback<Diagram> callback) {
-        // TODO lienzo-native
+        // TODO: lienzo-native
     }
 
     @Override
