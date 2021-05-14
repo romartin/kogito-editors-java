@@ -18,8 +18,6 @@ package org.kie.workbench.common.stunner.client.lienzo.components.mediators;
 
 import java.util.function.Supplier;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -85,8 +83,7 @@ public class ZoomLevelSelectorPresenter {
         this.zoomFactor = LEVEL_STEP;
     }
 
-    @PostConstruct
-    public void construct() {
+    public ZoomLevelSelectorPresenter init(final Supplier<LienzoCanvas> canvas) {
         floatingView
                 .clearTimeOut()
                 .setOffsetX(0)
@@ -98,9 +95,6 @@ public class ZoomLevelSelectorPresenter {
                 hide();
             }
         };
-    }
-
-    public ZoomLevelSelectorPresenter init(final Supplier<LienzoCanvas> canvas) {
         this.canvas = canvas;
         final Layer layer = getLayer();
         final LienzoPanel panel = getPanel();
@@ -183,7 +177,6 @@ public class ZoomLevelSelectorPresenter {
         hideTimer.schedule(250);
     }
 
-    @PreDestroy
     public void destroy() {
         cancelHide();
         if (null != panelResizeEventListener) {

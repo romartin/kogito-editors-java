@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -150,7 +149,6 @@ public class LienzoCanvasMediators {
         clear();
     }
 
-    @PreDestroy
     public void destroy() {
         if (null != mediators) {
             mediators.destroy();
