@@ -18,7 +18,6 @@ package org.uberfire.ext.wires.core.grids.client.widget.layer.impl;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.widget.panel.LienzoPanel;
 import com.ait.lienzo.client.widget.panel.impl.LienzoFixedPanel;
-import com.ait.lienzo.client.widget.panel.impl.LienzoPanelWidgetWrapper;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
@@ -30,6 +29,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ProvidesResize;
 import com.google.gwt.user.client.ui.RequiresResize;
+import org.jboss.errai.common.client.ui.ElementWrapperWidget;
 import org.uberfire.ext.wires.core.grids.client.model.Bounds;
 import org.uberfire.ext.wires.core.grids.client.widget.grid.GridWidget;
 import org.uberfire.ext.wires.core.grids.client.widget.scrollbars.GridLienzoScrollHandler;
@@ -88,6 +88,7 @@ public class GridLienzoPanel extends FocusPanel implements RequiresResize,
 
     protected GridLienzoPanel(final LienzoFixedPanel lienzoPanel) {
         this.lienzoPanel = lienzoPanel;
+        this.lienzoPanelWidget = ElementWrapperWidget.getWidget(lienzoPanel.getElement());
         this.gridLienzoScrollHandler = new GridLienzoScrollHandler(this);
 
         setupPanels();
@@ -98,7 +99,7 @@ public class GridLienzoPanel extends FocusPanel implements RequiresResize,
     protected GridLienzoPanel(final LienzoFixedPanel lienzoPanel,
                               final DefaultGridLayer defaultGridLayer) {
         this.lienzoPanel = lienzoPanel;
-        this.lienzoPanelWidget = new LienzoPanelWidgetWrapper(lienzoPanel);
+        this.lienzoPanelWidget = ElementWrapperWidget.getWidget(lienzoPanel.getElement());
         this.gridLienzoScrollHandler = new GridLienzoScrollHandler(this);
 
         add(defaultGridLayer);

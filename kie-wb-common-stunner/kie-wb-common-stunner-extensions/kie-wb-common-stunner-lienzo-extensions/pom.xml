@@ -87,6 +87,11 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.kie.kogito</groupId>
+      <artifactId>errai-common</artifactId>
+    </dependency>
+
   </dependencies>
 
 </project>
