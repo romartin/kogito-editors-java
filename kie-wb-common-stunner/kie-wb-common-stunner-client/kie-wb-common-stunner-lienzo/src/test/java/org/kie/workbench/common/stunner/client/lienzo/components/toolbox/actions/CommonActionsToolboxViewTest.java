@@ -16,97 +16,97 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.components.toolbox.actions;
 
-//import java.util.function.Consumer;
-//
-//import com.ait.lienzo.client.core.shape.toolbox.grid.AutoGrid;
-//import com.ait.lienzo.client.core.shape.toolbox.grid.Point2DGrid;
-//import com.ait.lienzo.client.core.shape.toolbox.items.ButtonItem;
-//import com.ait.lienzo.test.LienzoMockitoTestRunner;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.kie.workbench.common.stunner.core.client.shape.view.event.MouseClickEvent;
-//import org.kie.workbench.common.stunner.core.definition.shape.Glyph;
-//import org.mockito.ArgumentCaptor;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.mockito.ArgumentMatchers.eq;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.when;
+import java.util.function.Consumer;
 
-// TODO: lienzo-native @RunWith(LienzoMockitoTestRunner.class)
+import com.ait.lienzo.client.core.shape.toolbox.grid.AutoGrid;
+import com.ait.lienzo.client.core.shape.toolbox.grid.Point2DGrid;
+import com.ait.lienzo.client.core.shape.toolbox.items.ButtonItem;
+import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kie.workbench.common.stunner.core.client.shape.view.event.MouseClickEvent;
+import org.kie.workbench.common.stunner.core.definition.shape.Glyph;
+import org.mockito.ArgumentCaptor;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(LienzoMockitoTestRunner.class)
 public class CommonActionsToolboxViewTest
         extends AbstractActionsToolboxViewTest {
 
-//    private CommonActionsToolboxView tested;
-//
-//    @Before
-//    @SuppressWarnings("unchecked")
-//    public void setup() throws Exception {
-//        super.init();
-//        this.tested = new CommonActionsToolboxView(glyphRenderers,
-//                                                   toolboxFactory);
-//        when(toolbox.getView()).thenReturn(tested);
-//    }
-//
-//    @Test
-//    public void testInit() {
-//        final CommonActionsToolboxView cascade = doInit();
-//        assertEquals(tested,
-//                     cascade);
-//        verify(toolboxFactory,
-//               times(1)).forWiresShape(eq(shape));
-//        verify(toolboxView,
-//               times(1)).attachTo(eq(topLayer));
-//        // Verify toolbox settings.
-//        verify(toolboxView,
-//               times(1))
-//                .at(eq(CommonActionsToolboxView.TOOLBOX_AT));
-//        final ArgumentCaptor<Point2DGrid> gridCaptor = ArgumentCaptor.forClass(Point2DGrid.class);
-//        verify(toolboxView,
-//               times(1))
-//                .grid(gridCaptor.capture());
-//        final AutoGrid grid = (AutoGrid) gridCaptor.getValue();
-//        assertEquals(AbstractActionsToolboxView.BUTTON_SIZE,
-//                     grid.getIconSize(),
-//                     0);
-//        assertEquals(AbstractActionsToolboxView.BUTTON_PADDING,
-//                     grid.getPadding(),
-//                     0);
-//        assertEquals(CommonActionsToolboxView.GRID_TOWARDS,
-//                     grid.getDirection());
-//        // Verify toolbip.
-//        verify(toolboxTooltip,
-//               times(1)).at(CommonActionsToolboxView.TOOLTIP_AT);
-//        verify(toolboxTooltip,
-//               times(1)).towards(CommonActionsToolboxView.TOOLTIP_TOWARDS);
-//    }
-//
-//    @Test
-//    @SuppressWarnings("unchecked")
-//    public void testAddButton() {
-//        doInit();
-//        final Consumer<MouseClickEvent> eventConsumer = mock(Consumer.class);
-//        tested.addButton(mock(Glyph.class),
-//                         "title1");
-//        super.testAddButton("title1");
-//    }
-//
-//    @Test
-//    @SuppressWarnings("unchecked")
-//    public void testAddButtonIntoParent() {
-//        doInit();
-//        final ButtonItem buttonItem = mock(ButtonItem.class);
-//        tested.addButton(buttonItem);
-//        verify(toolboxView,
-//               times(1)).add(eq(buttonItem));
-//    }
-//
-//    private CommonActionsToolboxView doInit() {
-//        return tested.init(toolbox,
-//                           canvas,
-//                           shape);
-//    }
+    private CommonActionsToolboxView tested;
+
+    @Before
+    @SuppressWarnings("unchecked")
+    public void setup() throws Exception {
+        super.init();
+        this.tested = new CommonActionsToolboxView(glyphRenderers,
+                                                   toolboxFactory);
+        when(toolbox.getView()).thenReturn(tested);
+    }
+
+    @Test
+    public void testInit() {
+        final CommonActionsToolboxView cascade = doInit();
+        assertEquals(tested,
+                     cascade);
+        verify(toolboxFactory,
+               times(1)).forWiresShape(eq(shape));
+        verify(toolboxView,
+               times(1)).attachTo(eq(topLayer));
+        // Verify toolbox settings.
+        verify(toolboxView,
+               times(1))
+                .at(eq(CommonActionsToolboxView.TOOLBOX_AT));
+        final ArgumentCaptor<Point2DGrid> gridCaptor = ArgumentCaptor.forClass(Point2DGrid.class);
+        verify(toolboxView,
+               times(1))
+                .grid(gridCaptor.capture());
+        final AutoGrid grid = (AutoGrid) gridCaptor.getValue();
+        assertEquals(AbstractActionsToolboxView.BUTTON_SIZE,
+                     grid.getIconSize(),
+                     0);
+        assertEquals(AbstractActionsToolboxView.BUTTON_PADDING,
+                     grid.getPadding(),
+                     0);
+        assertEquals(CommonActionsToolboxView.GRID_TOWARDS,
+                     grid.getDirection());
+        // Verify toolbip.
+        verify(toolboxTooltip,
+               times(1)).at(CommonActionsToolboxView.TOOLTIP_AT);
+        verify(toolboxTooltip,
+               times(1)).towards(CommonActionsToolboxView.TOOLTIP_TOWARDS);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testAddButton() {
+        doInit();
+        final Consumer<MouseClickEvent> eventConsumer = mock(Consumer.class);
+        tested.addButton(mock(Glyph.class),
+                         "title1");
+        super.testAddButton("title1");
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testAddButtonIntoParent() {
+        doInit();
+        final ButtonItem buttonItem = mock(ButtonItem.class);
+        tested.addButton(buttonItem);
+        verify(toolboxView,
+               times(1)).add(eq(buttonItem));
+    }
+
+    private CommonActionsToolboxView doInit() {
+        return tested.init(toolbox,
+                           canvas,
+                           shape);
+    }
 }

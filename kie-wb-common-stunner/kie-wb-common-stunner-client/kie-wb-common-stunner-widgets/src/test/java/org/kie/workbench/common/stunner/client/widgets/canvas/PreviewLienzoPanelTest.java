@@ -16,63 +16,62 @@
 
 package org.kie.workbench.common.stunner.client.widgets.canvas;
 
-//import java.util.OptionalInt;
-//import java.util.function.BiFunction;
-//
-//import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
-//import com.ait.lienzo.client.widget.panel.impl.PreviewPanel;
-//import com.ait.lienzo.client.widget.panel.scrollbars.ScrollablePanel;
-//import com.ait.lienzo.test.LienzoMockitoTestRunner;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.mockito.ArgumentCaptor;
-//import org.mockito.Mock;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
-//import static org.mockito.ArgumentMatchers.eq;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.when;
+import java.util.function.Supplier;
 
-// TODO: lienzo-to-native  @RunWith(LienzoMockitoTestRunner.class)
+import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
+import com.ait.lienzo.client.widget.panel.impl.PreviewPanel;
+import com.ait.lienzo.client.widget.panel.impl.ScrollablePanel;
+import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(LienzoMockitoTestRunner.class)
 public class PreviewLienzoPanelTest {
 
-//    @Mock
-//    private StunnerLienzoBoundsPanel panel;
-//
-//    private PreviewLienzoPanel tested;
-//
-//    @Before
-//    public void init() {
-//        tested = new PreviewLienzoPanel(panel);
-//    }
-//
-//    @Test
-//    @SuppressWarnings("unchecked")
-//    public void testInit() {
-//        tested.init();
-//        ArgumentCaptor<BiFunction> builderCaptor = ArgumentCaptor.forClass(BiFunction.class);
-//        verify(panel, times(1)).setPanelBuilder(builderCaptor.capture());
-//        BiFunction<OptionalInt, OptionalInt, LienzoBoundsPanel> builder = builderCaptor.getValue();
-//        LienzoBoundsPanel result = builder.apply(OptionalInt.of(300), OptionalInt.of(450));
-//        assertTrue(result instanceof PreviewPanel);
-//        assertEquals(300, result.getWidthPx());
-//        assertEquals(450, result.getHeightPx());
-//    }
-//
-//    @Test
-//    public void testRefresh() {
-//        PreviewPanel view = mock(PreviewPanel.class);
-//        when(panel.getView()).thenReturn(view);
-//        ScrollableLienzoPanel delegate = mock(ScrollableLienzoPanel.class);
-//        StunnerLienzoBoundsPanel delegate2 = mock(StunnerLienzoBoundsPanel.class);
-//        when(delegate.getDelegate()).thenReturn(delegate2);
-//        ScrollablePanel previewView = mock(ScrollablePanel.class);
-//        when(delegate2.getView()).thenReturn(previewView);
-//        tested.observe(delegate);
-//        verify(view, times(1)).observe(eq(previewView));
-//    }
+    @Mock
+    private StunnerLienzoBoundsPanel panel;
+
+    private PreviewLienzoPanel tested;
+
+    @Before
+    public void init() {
+        tested = new PreviewLienzoPanel(panel);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testInit() {
+        tested.init();
+        ArgumentCaptor<Supplier> builderCaptor = ArgumentCaptor.forClass(Supplier.class);
+        verify(panel, times(1)).setPanelBuilder(builderCaptor.capture());
+        Supplier<LienzoBoundsPanel> builder = builderCaptor.getValue();
+        LienzoBoundsPanel result = builder.get();
+        assertTrue(result instanceof PreviewPanel);
+        assertEquals(420, result.getWidePx());
+        assertEquals(210, result.getHighPx());
+    }
+
+    @Test
+    public void testRefresh() {
+        PreviewPanel view = mock(PreviewPanel.class);
+        when(panel.getView()).thenReturn(view);
+        ScrollableLienzoPanel delegate = mock(ScrollableLienzoPanel.class);
+        StunnerLienzoBoundsPanel delegate2 = mock(StunnerLienzoBoundsPanel.class);
+        when(delegate.getDelegate()).thenReturn(delegate2);
+        ScrollablePanel previewView = mock(ScrollablePanel.class);
+        when(delegate2.getView()).thenReturn(previewView);
+        tested.observe(delegate);
+        verify(view, times(1)).observe(eq(previewView));
+    }
 }

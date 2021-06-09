@@ -15,22 +15,30 @@
  */
 
 package org.kie.workbench.common.stunner.client.lienzo.components.views;
-/*
+
 import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import elemental2.dom.Event;
+import elemental2.dom.EventListener;
+import elemental2.dom.HTMLDivElement;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.stunner.client.lienzo.canvas.LienzoPanel;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.uberfire.mvp.Command;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
- */
-
-// TODO: lienzo-native @RunWith(GwtMockitoTestRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class LienzoPanelFocusHandlerTest {
-/*
+
     @Mock
     private LienzoPanel panel;
 
@@ -46,39 +54,47 @@ public class LienzoPanelFocusHandlerTest {
     @Mock
     private Command onLostFocus;
 
+    @Mock
+    private HTMLDivElement panelElement;
+
     private LienzoPanelFocusHandler tested;
+
+    static final String ON_MOUSE_OVER = "mouseover";
+    static final String ON_MOUSE_LEAVE = "mouseleave";
 
     @Before
     public void setup() {
         when(panel.getView()).thenReturn(panelView);
+        when(panelView.getElement()).thenReturn(panelElement);
         when(panelView.getLienzoPanel()).thenReturn(lienzoPanel);
         tested = new LienzoPanelFocusHandler();
     }
 
-
     @Test
     public void testListen() {
         tested.listen(panel, onFocus, onLostFocus);
-        ArgumentCaptor<MouseOverHandler> overHandlerArgumentCaptor = ArgumentCaptor.forClass(MouseOverHandler.class);
-        verify(panelView, times(1)).addMouseOverHandler(overHandlerArgumentCaptor.capture());
-        overHandlerArgumentCaptor.getValue().onMouseOver(mock(MouseOverEvent.class));
+        Event mouseOverEvent = mock(Event.class);
+        ArgumentCaptor<EventListener> overHandlerArgumentCaptor = ArgumentCaptor.forClass(EventListener.class);
+        verify(panelElement, times(1)).addEventListener(eq(ON_MOUSE_OVER), overHandlerArgumentCaptor.capture());
+        overHandlerArgumentCaptor.getValue().handleEvent(mouseOverEvent);
         verify(onFocus, times(1)).execute();
-        ArgumentCaptor<MouseOutHandler> outHandlerArgumentCaptor = ArgumentCaptor.forClass(MouseOutHandler.class);
-        verify(panelView, times(1)).addMouseOutHandler(outHandlerArgumentCaptor.capture());
-        outHandlerArgumentCaptor.getValue().onMouseOut(mock(MouseOutEvent.class));
-        verify(onLostFocus, times(1)).execute();
 
+        Event mouseOutEvent = mock(Event.class);
+        ArgumentCaptor<EventListener> outHandlerArgumentCaptor = ArgumentCaptor.forClass(EventListener.class);
+        verify(panelElement, times(1)).addEventListener(eq(ON_MOUSE_LEAVE), outHandlerArgumentCaptor.capture());
+        outHandlerArgumentCaptor.getValue().handleEvent(mouseOutEvent);
+        verify(onLostFocus, times(1)).execute();
+    }
 
     @Test
     public void testClear() {
-        HandlerRegistration out = mock(HandlerRegistration.class);
-        HandlerRegistration over = mock(HandlerRegistration.class);
-        tested.outHandler = out;
-        tested.overHandler = over;
+        EventListener out = mock(EventListener.class);
+        EventListener over = mock(EventListener.class);
+        tested.panel = panelElement;
+        tested.mouseOverListener = out;
+        tested.mouseLeaveListener = over;
         tested.clear();
-        verify(out, times(1)).removeHandler();
-        verify(over, times(1)).removeHandler();
+        verify(panelElement, times(1)).removeEventListener(anyString(), eq(out));
+        verify(panelElement, times(1)).removeEventListener(anyString(), eq(over));
     }
-
-    */
 }

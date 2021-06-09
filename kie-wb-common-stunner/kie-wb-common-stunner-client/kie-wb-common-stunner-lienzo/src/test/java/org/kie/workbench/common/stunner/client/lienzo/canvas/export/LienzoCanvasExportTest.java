@@ -16,15 +16,22 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.canvas.export;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.shape.Layer;
+import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Viewport;
+import com.ait.lienzo.client.core.shape.wires.WiresManager;
+import com.ait.lienzo.client.core.shape.wires.WiresShape;
 import com.ait.lienzo.client.core.types.BoundingBox;
+import com.ait.lienzo.client.core.types.Point2D;
+import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.core.util.ScratchPad;
 import com.ait.lienzo.shared.core.types.DataURLType;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import elemental2.dom.HTMLDivElement;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,12 +47,18 @@ import org.kie.workbench.common.stunner.core.definition.adapter.DefinitionSetAda
 import org.kie.workbench.common.stunner.core.diagram.Diagram;
 import org.kie.workbench.common.stunner.core.diagram.Metadata;
 import org.kie.workbench.common.stunner.core.registry.definition.TypeDefinitionSetRegistry;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.uberfire.ext.editor.commons.client.file.exports.svg.IContext2D;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.kie.workbench.common.stunner.core.client.canvas.export.CanvasExport.URLDataType.JPG;
 import static org.kie.workbench.common.stunner.core.client.canvas.export.CanvasExport.URLDataType.PNG;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -105,6 +118,9 @@ public class LienzoCanvasExportTest {
     @Mock
     private DefinitionSetAdapter<Object> definitionSetAdapter;
 
+    @Mock
+    private HTMLDivElement layerElement;
+
     @Before
     public void setup() {
         when(canvasHandler.getCanvas()).thenReturn(canvas);
@@ -112,6 +128,7 @@ public class LienzoCanvasExportTest {
         when(canvasView.getLayer()).thenReturn(lienzoLayer);
         when(lienzoLayer.getLienzoLayer()).thenReturn(layer);
         when(layer.getViewport()).thenReturn(viewport);
+        when(viewport.getElement()).thenReturn(layerElement);
         when(layer.uuid()).thenReturn("someLayer");
         when(layer.getScratchPad()).thenReturn(scratchPad);
         when(layer.getWidth()).thenReturn(100);
@@ -175,11 +192,10 @@ public class LienzoCanvasExportTest {
                times(1)).clear();
     }
 
-    // TODO: lienzo-to-native
-/*
     @Test
     public void testWiresLayerBoundsProviderEmpty() {
-        layer = new Layer();
+        spy(new Layer());
+        when(layer.getViewport()).thenReturn(viewport);
         when(lienzoLayer.getLienzoLayer()).thenReturn(layer);
         WiresManager.get(layer);
         LienzoCanvasExport.WiresLayerBoundsProvider provider = new LienzoCanvasExport.WiresLayerBoundsProvider();
@@ -192,12 +208,17 @@ public class LienzoCanvasExportTest {
 
     @Test
     public void testWiresLayerBoundsProvider() {
-        layer = new Layer();
+        final WiresShape shape1 = spy(new WiresShape(new MultiPath().rect(0, 0, 50, 50)).setLocation(new Point2D(12, 44)));
+        final WiresShape shape2 = spy(new WiresShape(new MultiPath().rect(0, 0, 100, 150)).setLocation(new Point2D(1, 3)));
+        doNothing().when(shape1).shapeMoved();
+        doNothing().when(shape2).shapeMoved();
+        layer = spy(new Layer());
+        when(layer.getViewport()).thenReturn(viewport);
         when(lienzoLayer.getLienzoLayer()).thenReturn(layer);
         WiresManager wiresManager = WiresManager.get(layer);
         com.ait.lienzo.client.core.shape.wires.WiresLayer wiresLayer = wiresManager.getLayer();
-        wiresLayer.add(new WiresShape(new MultiPath().rect(0, 0, 50, 50)).setLocation(new Point2D(12, 44)));
-        wiresLayer.add(new WiresShape(new MultiPath().rect(0, 0, 100, 150)).setLocation(new Point2D(1, 3)));
+        wiresLayer.add(shape1);
+        wiresLayer.add(shape2);
         LienzoCanvasExport.WiresLayerBoundsProvider provider = new LienzoCanvasExport.WiresLayerBoundsProvider();
         int[] size0 = provider.compute(lienzoLayer, CanvasExportSettings.build());
         assertEquals(0, size0[0]);
@@ -238,5 +259,4 @@ public class LienzoCanvasExportTest {
         assertEquals(0.1d, t1.getScaleX(), 0d);
         assertEquals(0.3d, t1.getScaleY(), 0d);
     }
- */
 }

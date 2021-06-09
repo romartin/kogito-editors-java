@@ -124,7 +124,7 @@ public class ShapeGlyphDragHandler {
     }
 
     public void clear() {
-        // TODO: lienzo-to-native  clearState(() -> dragProxyPanel.clear());
+       clearState(null);
     }
 
     public void destroy() {
@@ -190,7 +190,9 @@ public class ShapeGlyphDragHandler {
         clearHandlers();
         if (Objects.nonNull(dragProxyPanel)) {
             rootPanelSupplier.get().remove(dragProxyPanel);
-            proxyDestroyCommand.execute();
+            if (null != proxyDestroyCommand) {
+                proxyDestroyCommand.execute();
+            }
             dragProxyPanel = null;
         }
     }

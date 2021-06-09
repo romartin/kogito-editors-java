@@ -15,12 +15,13 @@
  */
 
 package org.kie.workbench.common.stunner.client.lienzo.util;
-/*
+
 import com.ait.lienzo.client.core.image.ImageProxy;
 import com.ait.lienzo.client.core.shape.Picture;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwtmockito.WithClassesToStub;
+import elemental2.dom.HTMLImageElement;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +30,10 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.ait.lienzo.test.LienzoMockitoTestRunner;
-import org.junit.runner.RunWith;
- */
-
-// TODO: lienzo-native @WithClassesToStub({ImageElement.class}) @RunWith(LienzoMockitoTestRunner.class)
+@WithClassesToStub({ImageElement.class})
+@RunWith(LienzoMockitoTestRunner.class)
 public class LienzoPictureUtilsTest {
-/*
+
     @Mock
     private Picture picture;
 
@@ -43,14 +41,14 @@ public class LienzoPictureUtilsTest {
     private ImageProxy imageProxy;
 
     @Mock
-    private ImageElement imageElement;
+    private HTMLImageElement imageElement;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setup() {
         //Fake image loading...
         when(picture.getImageProxy()).thenReturn(imageProxy);
-        // TODO: lienzo-to-native  when(imageProxy.getImage()).thenReturn(imageElement);
+        when(imageProxy.getImage()).thenReturn(imageElement);
     }
 
     @Test
@@ -61,7 +59,8 @@ public class LienzoPictureUtilsTest {
                                       LienzoPictureUtils::retryDestroy);
 
         verify(picture).removeFromParent();
-        verify(imageElement).removeFromParent();
+
+        verify(imageElement).remove();
     }
 
     @Test
@@ -75,8 +74,6 @@ public class LienzoPictureUtilsTest {
                                       });
 
         verify(picture).removeFromParent();
-        verify(imageElement).removeFromParent();
+        verify(imageElement).remove();
     }
-
- */
 }

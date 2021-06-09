@@ -74,10 +74,17 @@ public class ZoomLevelSelectorPresenter {
     public ZoomLevelSelectorPresenter(final ClientTranslationService translationService,
                                       final FloatingView<IsWidget> floatingView,
                                       final ZoomLevelSelector selector) {
+        this(translationService, floatingView, selector, Js.cast(selector.asWidget().getElement()));
+    }
+
+    ZoomLevelSelectorPresenter(final ClientTranslationService translationService,
+                               final FloatingView<IsWidget> floatingView,
+                               final ZoomLevelSelector selector,
+                               final Element selectorElement) {
         this.translationService = translationService;
         this.floatingView = floatingView;
         this.selector = selector;
-        this.selectorElement = Js.cast(selector.asWidget().getElement());
+        this.selectorElement = selectorElement;
         this.minScale = 0;
         this.maxScale = Double.MAX_VALUE;
         this.zoomFactor = LEVEL_STEP;

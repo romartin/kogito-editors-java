@@ -21,7 +21,10 @@ import com.ait.lienzo.client.widget.panel.BoundsProvider;
 import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
 import com.ait.lienzo.client.widget.panel.LienzoPanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import com.google.gwt.event.dom.client.KeyCodes;
+import elemental2.dom.EventListener;
 import elemental2.dom.HTMLDivElement;
+import elemental2.dom.KeyboardEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +35,7 @@ import org.kie.workbench.common.stunner.core.client.event.keyboard.KeyDownEvent;
 import org.kie.workbench.common.stunner.core.client.event.keyboard.KeyPressEvent;
 import org.kie.workbench.common.stunner.core.client.event.keyboard.KeyUpEvent;
 import org.kie.workbench.common.stunner.core.graph.content.Bounds;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.uberfire.mocks.EventSourceMock;
 
@@ -40,6 +44,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -77,7 +82,16 @@ public class StunnerLienzoBoundsPanelTest {
     @Mock
     private Layer layer;
 
+    @Mock
+    private HTMLDivElement panelElement;
+
+    @Mock
+    private HTMLDivElement viewElement;
+
     private StunnerLienzoBoundsPanel tested;
+
+    static final String ON_MOUSE_DOWN = "mousedown";
+    static final String ON_MOUSE_UP = "mouseup";
 
     @Before
     @SuppressWarnings("unchecked")
@@ -89,27 +103,26 @@ public class StunnerLienzoBoundsPanelTest {
                                                    mouseUpEvent)
                 .setPanelBuilder(() -> view);
         when(view.getLienzoPanel()).thenReturn(lienzoPanel);
+        when(view.getElement()).thenReturn(viewElement);
+        when(lienzoPanel.getElement()).thenReturn(panelElement);
         when(lienzoLayer.getLienzoLayer()).thenReturn(layer);
     }
 
-    // TODO: lienzo-to-native
-    /*@Test
+    @Test
     public void testShow() {
         tested.show(lienzoLayer);
         verify(view, times(1)).add(eq(layer));
         verify(view, times(1)).setPresenter(eq(tested));
-        verify(lienzoPanel, times(1)).addMouseDownHandler(any(MouseDownHandler.class));
-        verify(lienzoPanel, times(1)).addMouseUpHandler(any(MouseUpHandler.class));
-        verify(handlerRegistrationManager, times(2)).register(any(HandlerRegistration.class));
-    }*/
+        verify(panelElement, times(1)).addEventListener(eq(ON_MOUSE_DOWN), any(EventListener.class));
+        verify(panelElement, times(1)).addEventListener(eq(ON_MOUSE_UP), any(EventListener.class));
+    }
 
-    // TODO: lienzo-to-native
-    /*@Test
+    @Test
     public void testFocus() {
         tested.setView(view)
                 .focus();
-        verify(view, times(1)).setFocus(eq(true));
-    }*/
+        verify(viewElement, times(1)).focus();
+    }
 
     @Test
     public void testSizeGetters() {
@@ -130,9 +143,13 @@ public class StunnerLienzoBoundsPanelTest {
 
     @Test
     public void testDestroy() {
-        tested.setView(view);
+        tested.show(lienzoLayer);
+        tested.addKeyDownHandler(mock(EventListener.class));
+        tested.addKeyUpHandler(mock(EventListener.class));
+        tested.addKeyPressHandler(mock(EventListener.class));
         tested.destroy();
-        // TODO: lienzo-to-native verify(handlerRegistrationManager, times(1)).destroy();
+        verify(panelElement, times(5))
+                .removeEventListener(anyString(), any(EventListener.class));
         verify(view, times(1)).destroy();
         assertNull(tested.getView());
     }
@@ -149,36 +166,45 @@ public class StunnerLienzoBoundsPanelTest {
         verify(mouseUpEvent, times(1)).fire(any(CanvasMouseUpEvent.class));
     }
 
-// TODO lienzo-to-native
-//    @Test
-//    public void testOnKeyPress() {
-//        int unicharCode = KeyboardEvent.Key.CONTROL.getUnicharCode();
-//        tested.onKeyPress(unicharCode);
-//        ArgumentCaptor<KeyPressEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyPressEvent.class);
-//        verify(keyPressEvent, times(1)).fire(eventArgumentCaptor.capture());
-//        KeyPressEvent keyEvent = eventArgumentCaptor.getValue();
-//        assertEquals(unicharCode, keyEvent.getKey().getUnicharCode());
-//    }
-//
-//    @Test
-//    public void testOnKeyDown() {
-//        int unicharCode = KeyboardEvent.Key.CONTROL.getUnicharCode();
-//        tested.onKeyDown(unicharCode);
-//        ArgumentCaptor<KeyDownEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyDownEvent.class);
-//        verify(keyDownEvent, times(1)).fire(eventArgumentCaptor.capture());
-//        KeyDownEvent keyEvent = eventArgumentCaptor.getValue();
-//        assertEquals(unicharCode, keyEvent.getKey().getUnicharCode());
-//    }
-//
-//    @Test
-//    public void testOnKeyUp() {
-//        int unicharCode = KeyboardEvent.Key.CONTROL.getUnicharCode();
-//        tested.onKeyUp(unicharCode);
-//        ArgumentCaptor<KeyUpEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyUpEvent.class);
-//        verify(keyUpEvent, times(1)).fire(eventArgumentCaptor.capture());
-//        KeyUpEvent keyEvent = eventArgumentCaptor.getValue();
-//        assertEquals(unicharCode, keyEvent.getKey().getUnicharCode());
-//    }
+
+    @Test
+    public void testOnKeyPress() {
+        KeyboardEvent event = mock(KeyboardEvent.class);
+        event.code = "ctrl";
+
+        tested.onKeyPress(event);
+
+        ArgumentCaptor<KeyPressEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyPressEvent.class);
+        verify(keyPressEvent, times(1)).fire(eventArgumentCaptor.capture());
+        KeyPressEvent keyEvent = eventArgumentCaptor.getValue();
+        assertEquals(KeyCodes.KEY_CTRL, keyEvent.getKey().getUnicharCode());
+    }
+
+    @Test
+    public void testOnKeyDown() {
+        KeyboardEvent event = mock(KeyboardEvent.class);
+        event.code = "ctrl";
+
+        tested.onKeyDown(event);
+
+        ArgumentCaptor<KeyDownEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyDownEvent.class);
+        verify(keyDownEvent, times(1)).fire(eventArgumentCaptor.capture());
+        KeyDownEvent keyEvent = eventArgumentCaptor.getValue();
+        assertEquals(KeyCodes.KEY_CTRL, keyEvent.getKey().getUnicharCode());
+    }
+
+    @Test
+    public void testOnKeyUp() {
+        KeyboardEvent event = mock(KeyboardEvent.class);
+        event.code = "ctrl";
+
+        tested.onKeyUp(event);
+
+        ArgumentCaptor<KeyUpEvent> eventArgumentCaptor = ArgumentCaptor.forClass(KeyUpEvent.class);
+        verify(keyUpEvent, times(1)).fire(eventArgumentCaptor.capture());
+        KeyUpEvent keyEvent = eventArgumentCaptor.getValue();
+        assertEquals(KeyCodes.KEY_CTRL, keyEvent.getKey().getUnicharCode());
+    }
 
     @Test
     public void testLocationConstraints() {

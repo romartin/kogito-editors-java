@@ -15,7 +15,7 @@
  */
 
 package org.kie.workbench.common.stunner.svg.client.shape.view.impl;
-/*
+
 import java.util.Collection;
 
 import com.ait.lienzo.client.core.shape.Group;
@@ -31,11 +31,9 @@ import org.kie.workbench.common.stunner.svg.client.shape.view.SVGPrimitiveShape;
 
 import static org.junit.Assert.assertEquals;
 
- */
-
-// TODO: lienzo-native@RunWith(LienzoMockitoTestRunner.class)
+@RunWith(LienzoMockitoTestRunner.class)
 public class SVGShapeViewImplTest {
-/*
+
     private SVGShapeViewImpl tested;
     private SVGPrimitiveShape shape;
     private Rectangle rectangle;
@@ -94,6 +92,4 @@ public class SVGShapeViewImplTest {
         assertEquals(child,
                      svgChildren.iterator().next());
     }
-
- */
 }

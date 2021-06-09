@@ -162,13 +162,13 @@ public class StunnerLienzoBoundsPanel
             getLienzoPanel().getElement().removeEventListener(ON_KEY_UP, keyUpEventListener);
             keyUpEventListener = null;
         }
-        if (null != keyUpEventListener) {
+        if (null != keyDownEventListener) {
             getLienzoPanel().getElement().removeEventListener(ON_KEY_DOWN, keyDownEventListener);
             keyDownEventListener = null;
         }
-        if (null != keyUpEventListener) {
+        if (null != keyPressEventListener) {
             getLienzoPanel().getElement().removeEventListener(ON_KEY_PRESS, keyPressEventListener);
-            keyUpEventListener = null;
+            keyPressEventListener = null;
         }
 
         view.destroy();
@@ -196,34 +196,39 @@ public class StunnerLienzoBoundsPanel
         mouseUpEvent.fire(new CanvasMouseUpEvent());
     }
 
-    // TODO: lienzo-to-native  check if it works
     void onKeyPress(final elemental2.dom.Event event) {
-        elemental2.dom.KeyboardEvent nativeKeyboardEvent = Js.uncheckedCast(event);
+        onKeyPress(Js.uncheckedCast(event));
+    }
+
+    void onKeyPress(final elemental2.dom.KeyboardEvent nativeKeyboardEvent) {
         final KeyboardEvent.Key key = getKey(nativeKeyboardEvent.code);
         if (null != key) {
             keyPressEvent.fire(new KeyPressEvent(key));
         }
     }
 
-    // TODO: lienzo-to-native  check if it works
     void onKeyDown(final elemental2.dom.Event event) {
-        elemental2.dom.KeyboardEvent nativeKeyboardEvent = Js.uncheckedCast(event);
+        onKeyDown(Js.uncheckedCast(event));
+    }
+
+    void onKeyDown(final elemental2.dom.KeyboardEvent nativeKeyboardEvent) {
         final KeyboardEvent.Key key = getKey(nativeKeyboardEvent.code);
         if (null != key) {
             keyDownEvent.fire(new KeyDownEvent(key));
         }
     }
 
-    // TODO: lienzo-to-native  check if it works
     void onKeyUp(final elemental2.dom.Event event) {
-        elemental2.dom.KeyboardEvent nativeKeyboardEvent = Js.uncheckedCast(event);
+        onKeyUp(Js.uncheckedCast(event));
+    }
+
+    void onKeyUp(final elemental2.dom.KeyboardEvent nativeKeyboardEvent) {
         final KeyboardEvent.Key key = getKey(nativeKeyboardEvent.code);
         if (null != key) {
             keyUpEvent.fire(new KeyUpEvent(key));
         }
     }
 
-    // TODO: lienzo-to-native  check if it works
     private KeyboardEvent.Key getKey(final String stringCode) {
         final KeyboardEvent.Key[] keys = KeyboardEvent.Key.values();
         for (final KeyboardEvent.Key key : keys) {

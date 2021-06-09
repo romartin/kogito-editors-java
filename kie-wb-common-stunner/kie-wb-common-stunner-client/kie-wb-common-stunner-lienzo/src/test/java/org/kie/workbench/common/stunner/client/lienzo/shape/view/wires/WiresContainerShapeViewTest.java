@@ -16,7 +16,6 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.shape.view.wires;
 
-/*
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresShapeControl;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
@@ -29,12 +28,9 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
- */
-
-// TODO: lienzo-native @RunWith(LienzoMockitoTestRunner.class)
+@RunWith(LienzoMockitoTestRunner.class)
 public class WiresContainerShapeViewTest {
 
-    /*
     @Mock
     private WiresShapeControl control;
 
@@ -65,6 +61,4 @@ public class WiresContainerShapeViewTest {
             }
         };
     }
-
-     */
 }

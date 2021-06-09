@@ -24,12 +24,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.stunner.client.lienzo.components.glyph.LienzoGlyphRenderer;
+import org.kie.workbench.common.stunner.client.lienzo.components.views.LienzoPanelWidget;
 import org.kie.workbench.common.stunner.core.client.components.views.WidgetElementRendererView;
 import org.kie.workbench.common.stunner.core.definition.shape.ShapeGlyph;
 import org.mockito.Mock;
 import org.uberfire.mvp.Command;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyDouble;
 import static org.mockito.Mockito.times;
@@ -70,8 +72,7 @@ public class ElementShapeGlyphRendererTest {
                      tested.getGlyphType());
     }
 
-    // TODO: lienzo-native
-    /*@Test
+    @Test
     public void testRender() {
         final ShapeGlyph glyph = ShapeGlyph.create();
         tested.render(glyph,
@@ -84,10 +85,8 @@ public class ElementShapeGlyphRendererTest {
                                 eq(100d),
                                 eq(200d));
         verify(view,
-               times(1)).setWidget(any(Widget.class));
+               times(1)).setWidget(any(LienzoPanelWidget.class));
     }
-
-     */
 
     @Test
     public void testDestroy() {

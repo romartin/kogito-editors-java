@@ -35,12 +35,17 @@ import org.junit.runner.RunWith;
 import org.kie.workbench.common.stunner.core.client.shape.view.event.ShapeViewSupportedEvents;
 import org.mockito.Mock;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(LienzoMockitoTestRunner.class)
@@ -92,8 +97,6 @@ public class WiresConnectorViewExtTest {
         layer.add(tested.getGroup());
     }
 
-    // TODO: lienzo-native
-    /*
     @Test
     public void testLabel() {
         assertNotNull(tested.label);
@@ -129,8 +132,6 @@ public class WiresConnectorViewExtTest {
         assertFalse(tested.label.isPresent());
         verify(connectorControl, times(1)).destroy();
     }
-
-     */
 
     @Test
     public void testLabelNotPresent() {

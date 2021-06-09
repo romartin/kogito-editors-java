@@ -20,6 +20,8 @@ import java.util.function.BiFunction;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
+import com.ait.lienzo.client.core.util.CursorMap;
+import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Element;
@@ -27,6 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.workbench.common.stunner.core.client.canvas.AbstractCanvas;
+import org.kie.workbench.common.stunner.core.client.canvas.CanvasGrid;
 import org.kie.workbench.common.stunner.core.client.canvas.CanvasPanel;
 import org.kie.workbench.common.stunner.core.client.canvas.CanvasSettings;
 import org.kie.workbench.common.stunner.core.client.canvas.Transform;
@@ -34,6 +38,8 @@ import org.kie.workbench.common.stunner.core.client.shape.view.ShapeView;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -71,11 +77,10 @@ public class LienzoCanvasViewTest {
         when(panelWidget.getElement()).thenReturn(panelElement);
         when(panelElement.getStyle()).thenReturn(panelStyle);
         when(lienzoLayer.getTopLayer()).thenReturn(topLayer);
+        when(panel.show(lienzoLayer)).thenReturn(panel);
         this.tested = new LienzoCanvasViewStub(decoratorFactory);
     }
 
-    // TODO: lienzo-native
-    /*
     @Test
     public void testInitialize() {
         assertEquals(tested, tested.initialize(panel,
@@ -100,7 +105,6 @@ public class LienzoCanvasViewTest {
         tested.setCursor(AbstractCanvas.Cursors.MOVE);
         verify(panelView, times(1))
                 .setCursor(eq(CursorMap.get().lookup(Style.Cursor.MOVE.getCssName())));
-
     }
 
     @Test
@@ -109,7 +113,6 @@ public class LienzoCanvasViewTest {
         tested.setGrid(null);
         verify(panel, times(1)).setBackgroundLayer(eq(null));
     }
-    */
 
     @Test
     public void testClear() {
@@ -124,8 +127,6 @@ public class LienzoCanvasViewTest {
         assertEquals(transform, tested.getTransform());
     }
 
-    // TODO: lienzo-native
-    /*
     @Test
     public void testDestroy() {
         tested.initialize(panel,
@@ -133,7 +134,6 @@ public class LienzoCanvasViewTest {
         tested.destroy();
         verify(lienzoLayer, times(1)).destroy();
     }
-    */
 
     public class LienzoCanvasViewStub extends LienzoCanvasView<LienzoLayer> {
 

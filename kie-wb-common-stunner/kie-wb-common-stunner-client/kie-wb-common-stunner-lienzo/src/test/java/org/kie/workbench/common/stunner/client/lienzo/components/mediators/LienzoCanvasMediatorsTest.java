@@ -16,10 +16,49 @@
 
 package org.kie.workbench.common.stunner.client.lienzo.components.mediators;
 
-// TODO: lienzo-to-native  @RunWith(LienzoMockitoTestRunner.class)
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import com.ait.lienzo.client.core.mediator.MousePanMediator;
+import com.ait.lienzo.client.core.mediator.MouseWheelZoomMediator;
+import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
+import com.ait.lienzo.client.widget.panel.mediators.PanelMediators;
+import com.ait.lienzo.client.widget.panel.mediators.PanelPreviewMediator;
+import com.ait.lienzo.test.LienzoMockitoTestRunner;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kie.workbench.common.stunner.client.lienzo.canvas.LienzoCanvas;
+import org.kie.workbench.common.stunner.client.lienzo.canvas.LienzoCanvasView;
+import org.kie.workbench.common.stunner.client.lienzo.canvas.LienzoPanel;
+import org.kie.workbench.common.stunner.client.lienzo.components.views.LienzoCanvasNotification;
+import org.kie.workbench.common.stunner.core.client.api.SessionManager;
+import org.kie.workbench.common.stunner.core.client.canvas.AbstractCanvas;
+import org.kie.workbench.common.stunner.core.client.canvas.controls.keyboard.KeyEventHandlerImpl;
+import org.kie.workbench.common.stunner.core.client.canvas.controls.keyboard.KeyboardControl;
+import org.kie.workbench.common.stunner.core.client.event.keyboard.KeyboardEvent;
+import org.kie.workbench.common.stunner.core.client.i18n.ClientTranslationService;
+import org.kie.workbench.common.stunner.core.i18n.CoreTranslationMessages;
+import org.kie.workbench.common.stunner.core.util.DefinitionUtils;
+import org.kie.workbench.common.stunner.core.validation.DiagramElementNameProvider;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(LienzoMockitoTestRunner.class)
 public class LienzoCanvasMediatorsTest {
 
-    /*@Mock
+    @Mock
     private LienzoCanvasNotification notification;
 
     @Mock
@@ -158,5 +197,5 @@ public class LienzoCanvasMediatorsTest {
         tested.destroy();
         verify(mediators, times(1)).destroy();
         assertNull(tested.getMediators());
-    }*/
+    }
 }

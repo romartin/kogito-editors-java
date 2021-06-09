@@ -15,10 +15,11 @@
  */
 
 package org.kie.workbench.common.stunner.client.widgets.canvas;
-/*
+
 import java.util.function.Supplier;
 
 import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
+import com.ait.lienzo.client.widget.panel.impl.ScrollablePanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +34,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
- */
-
-// TODO: lienzo-native @RunWith(LienzoMockitoTestRunner.class)
+@RunWith(LienzoMockitoTestRunner.class)
 public class ScrollableLienzoPanelTest {
-/*
+
     @Mock
     private StunnerLienzoBoundsPanel panel;
 
@@ -57,18 +56,16 @@ public class ScrollableLienzoPanelTest {
         Supplier<LienzoBoundsPanel> builder = builderCaptor.getValue();
         LienzoBoundsPanel result = builder.get();
         assertTrue(result instanceof ScrollableLienzoPanelView);
-        assertEquals(300, result.getWidePx());
-        assertEquals(450, result.getHighPx());
+        assertEquals(0, result.getWidePx());
+        assertEquals(0, result.getHighPx());
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testRefresh() {
-        LienzoBoundsPanel view = mock(LienzoBoundsPanel.class);
+        ScrollablePanel view = mock(ScrollablePanel.class);
         when(panel.getView()).thenReturn(view);
         tested.refresh();
         verify(view, times(1)).refresh();
     }
-
- */
 }
