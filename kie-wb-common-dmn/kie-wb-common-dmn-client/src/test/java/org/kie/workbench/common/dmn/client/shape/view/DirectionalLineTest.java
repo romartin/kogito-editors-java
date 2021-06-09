@@ -18,12 +18,15 @@ package org.kie.workbench.common.dmn.client.shape.view;
 
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.Point2D;
+import com.ait.lienzo.client.core.types.Point2DArray;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(LienzoMockitoTestRunner.class)
 public class DirectionalLineTest {
@@ -53,25 +56,21 @@ public class DirectionalLineTest {
         assertEquals(50.2d, bb2.getMaxY(), 0d);
     }
 
-    // TODO
-    /*@Test
+    @Test
     public void testParsePoints() throws Exception {
-        final Attributes attr = mock(Attributes.class);
-        final Point2DArray points = new Point2DArray(0d, 0d)
-                .push(20d, 30d);
-        when(attr.getControlPoints()).thenReturn(points);
-        final boolean parsed = tested.parse(attr);
+        final Point2DArray points = Point2DArray.fromArrayOfDouble(0d, 0d, 20d, 30d);
+        tested.setPoint2DArray(points);
+        final boolean parsed = tested.parse();
         assertTrue(parsed);
     }
 
     @Test
     public void testSkipParse() throws Exception {
-        final Attributes attr = mock(Attributes.class);
         final Point2DArray points = new Point2DArray();
-        when(attr.getControlPoints()).thenReturn(points);
-        final boolean parsed = tested.parse(attr);
+        tested.setPoint2DArray(points);
+        final boolean parsed = tested.parse();
         assertFalse(parsed);
-    }*/
+    }
 
     @Test
     public void testAdjustPoint() {

@@ -35,9 +35,6 @@ public class DecisionServiceDividerLineTest {
     @Mock
     private Context2D context;
 
-    @Mock
-    // TODO private Attributes attributes;
-
     private DecisionServiceDividerLine line;
 
     @Before
@@ -54,7 +51,7 @@ public class DecisionServiceDividerLineTest {
 
     @Test
     public void testPrepare() {
-        // TODO assertThat(line.prepare(context, attributes, 1.0)).isTrue();
+        assertThat(line.prepare(context, 1.0)).isTrue();
 
         verify(context).beginPath();
         verify(context).moveTo(eq(0.0), eq(0.0));

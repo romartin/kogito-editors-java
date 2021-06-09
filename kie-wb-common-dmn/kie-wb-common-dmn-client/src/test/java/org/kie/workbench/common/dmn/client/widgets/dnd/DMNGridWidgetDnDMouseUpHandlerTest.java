@@ -71,7 +71,6 @@ public class DMNGridWidgetDnDMouseUpHandlerTest {
         this.handler = new DMNGridWidgetDnDMouseUpHandler(layer, state);
 
         when(layer.getViewport()).thenReturn(viewport);
-        // TODO when(viewport.getElement()).thenReturn(element);
         when(element.getStyle()).thenReturn(style);
     }
 

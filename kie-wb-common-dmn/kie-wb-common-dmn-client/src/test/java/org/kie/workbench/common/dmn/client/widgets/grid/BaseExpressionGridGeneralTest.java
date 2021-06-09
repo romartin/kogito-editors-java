@@ -29,9 +29,11 @@ import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.workbench.common.dmn.api.definition.HasExpression;
 import org.kie.workbench.common.dmn.api.definition.HasName;
 import org.kie.workbench.common.dmn.api.definition.NOPDomainObject;
 import org.kie.workbench.common.dmn.api.definition.model.Decision;
+import org.kie.workbench.common.dmn.api.definition.model.Expression;
 import org.kie.workbench.common.dmn.api.property.dmn.Name;
 import org.kie.workbench.common.dmn.api.property.dmn.QName;
 import org.kie.workbench.common.dmn.client.commands.factory.canvas.SetComponentWidthCommand;
@@ -42,6 +44,7 @@ import org.kie.workbench.common.dmn.client.commands.general.SetCellValueCommand;
 import org.kie.workbench.common.dmn.client.commands.general.SetHasValueCommand;
 import org.kie.workbench.common.dmn.client.commands.general.SetHeaderValueCommand;
 import org.kie.workbench.common.dmn.client.commands.general.SetTypeRefCommand;
+import org.kie.workbench.common.dmn.client.editors.expressions.ExpressionContainerUIModelMapper;
 import org.kie.workbench.common.dmn.client.editors.expressions.types.GridFactoryCommandUtils;
 import org.kie.workbench.common.dmn.client.editors.expressions.types.context.ExpressionCellValue;
 import org.kie.workbench.common.dmn.client.widgets.grid.columns.EditableHeaderMetaData;
@@ -52,6 +55,7 @@ import org.kie.workbench.common.dmn.client.widgets.grid.controls.HasCellEditorCo
 import org.kie.workbench.common.dmn.client.widgets.grid.handlers.EditableHeaderGridWidgetEditCellMouseEventHandler;
 import org.kie.workbench.common.dmn.client.widgets.grid.model.DMNGridCell;
 import org.kie.workbench.common.dmn.client.widgets.grid.model.DMNGridColumn;
+import org.kie.workbench.common.dmn.client.widgets.grid.model.DMNGridData;
 import org.kie.workbench.common.dmn.client.widgets.grid.model.ExpressionEditorChanged;
 import org.kie.workbench.common.dmn.client.widgets.grid.model.GridCellTuple;
 import org.kie.workbench.common.dmn.client.widgets.grid.model.GridCellValueTuple;
@@ -209,30 +213,29 @@ public class BaseExpressionGridGeneralTest extends BaseExpressionGridTest {
     public BaseExpressionGrid getGrid() {
         final Optional<HasName> hasName = Optional.of(decision);
 
-        // TODO
-        /*return new BaseExpressionGrid(parentCell,
-                                      Optional.empty(),
-                                      HasExpression.NOP,
-                                      hasName,
-                                      gridPanel,
-                                      gridLayer,
-                                      new DMNGridData(),
-                                      renderer,
-                                      definitionUtils,
-                                      sessionManager,
-                                      sessionCommandManager,
-                                      canvasCommandFactory,
-                                      editorSelectedEvent,
-                                      refreshFormPropertiesEvent,
-                                      domainObjectSelectionEvent,
-                                      cellEditorControls,
-                                      listSelector,
-                                      translationService,
-                                      false,
-                                      0,
-                                      readOnlyProvider) {
+        return new BaseExpressionGrid<Expression, DMNGridData, ExpressionContainerUIModelMapper>(parentCell,
+                                                                                                 Optional.empty(),
+                                                                                                 HasExpression.NOP,
+                                                                                                 hasName,
+                                                                                                 gridPanel,
+                                                                                                 gridLayer,
+                                                                                                 new DMNGridData(),
+                                                                                                 renderer,
+                                                                                                 definitionUtils,
+                                                                                                 sessionManager,
+                                                                                                 sessionCommandManager,
+                                                                                                 canvasCommandFactory,
+                                                                                                 editorSelectedEvent,
+                                                                                                 refreshFormPropertiesEvent,
+                                                                                                 domainObjectSelectionEvent,
+                                                                                                 cellEditorControls,
+                                                                                                 listSelector,
+                                                                                                 translationService,
+                                                                                                 false,
+                                                                                                 0,
+                                                                                                 readOnlyProvider) {
             @Override
-            protected BaseUIModelMapper makeUiModelMapper() {
+            protected ExpressionContainerUIModelMapper makeUiModelMapper() {
                 return mapper;
             }
 
@@ -250,9 +253,7 @@ public class BaseExpressionGridGeneralTest extends BaseExpressionGridTest {
             public void initialiseUiCells() {
                 //Nothing for this test
             }
-        };*/
-
-        return null;
+        };
     }
 
     @Test

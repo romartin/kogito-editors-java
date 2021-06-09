@@ -39,9 +39,6 @@ public class DMNDecisionServiceSVGViewFactoryBuilderTest {
     @Mock
     private Shape shape;
 
-    // TODO @Mock
-    // TODO private Attributes shapeAttributes;
-
     @Mock
     private Node shapeNode;
 
@@ -51,7 +48,6 @@ public class DMNDecisionServiceSVGViewFactoryBuilderTest {
     @SuppressWarnings("unchecked")
     public void setup() {
         when(svgPrimitiveShape.get()).thenReturn(shape);
-        // TODO when(shape.getAttributes()).thenReturn(shapeAttributes);
         when(shape.asNode()).thenReturn(shapeNode);
 
         this.builder = new DMNDecisionServiceSVGViewFactoryBuilder();
