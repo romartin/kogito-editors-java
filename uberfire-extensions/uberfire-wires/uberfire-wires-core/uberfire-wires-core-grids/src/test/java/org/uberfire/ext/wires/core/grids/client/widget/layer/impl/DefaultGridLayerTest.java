@@ -23,6 +23,7 @@ import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Transform;
+import com.ait.lienzo.client.widget.panel.impl.LienzoFixedPanel;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import com.google.gwt.user.client.Command;
 import org.junit.Before;
@@ -69,7 +70,7 @@ public class DefaultGridLayerTest {
     public void setup() {
         this.transform = new Transform();
 
-        // TODO final LienzoPanel panel = new LienzoPanel(500, 500);
+        final LienzoFixedPanel panel = LienzoFixedPanel.newPanel(500, 500);
         final DefaultGridLayer wrapped = new DefaultGridLayer() {
 
             @Override
@@ -84,7 +85,7 @@ public class DefaultGridLayerTest {
                 return this;
             }
         };
-        // TODO panel.add(wrapped);
+        panel.add(wrapped);
         this.gridLayer = spy(wrapped);
 
         when(gridLayer.getViewport()).thenReturn(viewport);

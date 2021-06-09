@@ -27,8 +27,7 @@ import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import com.ait.lienzo.tools.client.event.INodeXYEvent;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style;
+import elemental2.dom.HTMLDivElement;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,12 +73,6 @@ public class GridWidgetDnDMouseMoveHandlerTest {
 
     @Mock
     private Viewport viewport;
-
-    @Mock
-    private DivElement element;
-
-    @Mock
-    private Style style;
 
     @Mock
     private GridWidget gridWidget;
@@ -140,9 +133,8 @@ public class GridWidgetDnDMouseMoveHandlerTest {
         when(renderer.getHeaderRowHeight()).thenReturn(32.0);
 
         when(layer.getViewport()).thenReturn(viewport);
-        // TODO when(viewport.getElement()).thenReturn(element);
+        when(viewport.getElement()).thenReturn(new HTMLDivElement());
         when(viewport.getMediators()).thenReturn(mediators);
-        when(element.getStyle()).thenReturn(style);
         when(gridWidget.getModel()).thenReturn(uiModel);
         when(gridWidget.getViewport()).thenReturn(viewport);
         when(gridWidget.getRenderer()).thenReturn(renderer);
