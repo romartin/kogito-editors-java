@@ -4,6 +4,7 @@ import com.ait.lienzo.client.core.shape.GridLayer;
 import com.ait.lienzo.client.core.shape.Line;
 import com.ait.lienzo.client.widget.panel.IsResizable;
 import com.ait.lienzo.client.widget.panel.LienzoPanel;
+import com.ait.lienzo.client.widget.panel.impl.LienzoFixedPanel;
 import com.google.gwt.dom.client.Style.Display;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLDivElement;
@@ -14,74 +15,91 @@ public class BaseLienzoExamples {
 
     HTMLDivElement panelDiv;
 
+    private Example[] tests;
     LienzoPanel lienzo;
 
     private Example test;
 
     public void doLoad() {
-        createTests(new BasicShapesExample("Shapes"),
-                    new BasicWiresExample("Wires"),
-                    new ToolboxExample("Toolbox"),
-                    new PerformanceTests("Performance tests"),
-                    new StrokeAndFillingExample("Stroke and Filling"),
-                    new GradientsAndShadowsExample("Gradients and Shadows"),
-                    new ColorsAndTransparencyExample("Colors and Transparency"),
-                    new HorizontalTextAlignmentExample("Horizontal Text Alignment"),
-                    new VerticalTextAlignmentExample("Vertical Text Alignment"),
-                    new MeasureTextExample("Measure Text"),
-                    new ScaledTextExample("Scaled Text"),
-                    new TextAroundArcExample("Text around Arc"),
-                    new PanAndZoomExample("Pan and Zoom"),
-                    new TweeningExample("Tweening"),
-                    new TimersExample("Timers"),
-                    new DragCirclesExample("Drag Circles"),
-                    new FixedDragConstraintsExample("Fixed Drag Constraints"),
-                    new CustomDragConstraintsExample("Custom Drag Constraints"),
-                    new AnimatedCirclesExample("Animated Circles"),
-                    new EventExample("Events"),
-                    new SVGTigerExample("SVG Paths Tiger"),
-                    new Animate("Animations"),
-                    new LionExample("Polygon Lion with Clipping"),
-                    new WiresExample("Wires General"),
-                    new WiresDockingExample("Wires Docking"),
-                    new CardinalIntersectsExample("Cardinal Intersects"),
-                    new CornerRadiusExample("Corner Radius"),
-                    new ShapesExample("Shapes Example"),
-                    new MovieExample("Video"),
-                    new DrawImageExample("Draw Image"),
-                    new Transform3PointsExample("Transform 3Points"),
-                    new SpriteExample("Sprite Example"),
-                    new ImageStripExample("Image Strip Example"),
-                    new AsteroidsGameExample("Asteroids Game")
-        );
-    }
-
-    public void createTests(Example... tests) {
-        for (Example test : tests) {
-            createTest(test);
+        tests = new Example[]{
+                new BasicShapesExample("Basic"),
+                new BasicWiresExample("Basic Wires"),
+                new ToolboxExample("Toolbox"),
+                new PerformanceTests("Performance tests"),
+                new StrokeAndFillingExample("Stroke and Filling"),
+                new GradientsAndShadowsExample("Gradients and Shadows"),
+                new ColorsAndTransparencyExample("Colors and Transparency"),
+                new HorizontalTextAlignmentExample("Horizontal Text Alignment"),
+                new VerticalTextAlignmentExample("Vertical Text Alignment"),
+                new MeasureTextExample("Measure Text"),
+                new ScaledTextExample("Scaled Text"),
+                new TextAroundArcExample("Text around Arc"),
+                new PanAndZoomExample("Pan and Zoom"),
+                new TweeningExample("Tweening"),
+                new TimersExample("Timers"),
+                new DragCirclesExample("Drag Circles"),
+                new FixedDragConstraintsExample("Fixed Drag Constraints"),
+                new CustomDragConstraintsExample("Custom Drag Constraints"),
+                new AnimatedCirclesExample("Animated Circles"),
+                new EventExample("Events"),
+                new SVGTigerExample("SVG Paths Tiger"),
+                new Animate("Animations"),
+                new LionExample("Polygon Lion with Clipping"),
+                new WiresExample("Wires General"),
+                new WiresDockingExample("Wires Docking"),
+                new CardinalIntersectsExample("Cardinal Intersects"),
+                new CornerRadiusExample("Corner Radius"),
+                new ShapesExample("Shapes Example"),
+                new MovieExample("Video"),
+                new DrawImageExample("Draw Image"),
+                new Transform3PointsExample("Transform 3Points"),
+                new SpriteExample("Sprite Example"),
+                new ImageStripExample("Image Strip Example"),
+                new AsteroidsGameExample("Asteroids Game")
+        };
+        for (int i = 0; i < tests.length; i++) {
+            createTest(i);
         }
+        JsLienzoExamples jsLienzoExamples = new JsLienzoExamples();
+        jsLienzoExamples.examples = this;
+        setupJsLienzoTypes(jsLienzoExamples);
     }
 
-    public void createTest(Example test) {
+    // TODO: Move to J2CL impl
+    public static native void setupJsLienzoTypes(Object jsLienzoExamples) /*-{
+        $wnd.jsLienzoExamples = jsLienzoExamples;
+    }-*/;
+
+    public void createTest(int index) {
+        Example test = tests[index];
         HTMLDivElement e1 = (HTMLDivElement) document.createElement("div");
-        HTMLDivElement top = (HTMLDivElement) document.getElementById("top");
         elemental2.dom.Text e1Text = document.createTextNode(test.getTitle());
         e1.appendChild(e1Text);
         e1.addEventListener("click", evt -> {
-            top.style.display = Display.NONE.getCssName();
-            createPanel(test);
-            this.test = test;
-            this.test.init(lienzo, top);
-            this.test.run();
+            goToTest(index);
         });
         Element links = document.getElementById("nav");
         links.appendChild(e1);
     }
 
-    private void createPanel(Example test) {
+    public void goToTest(int index) {
+        HTMLDivElement top = (HTMLDivElement) document.getElementById("top");
+        top.style.display = Display.NONE.getCssName();
+        Example test = tests[index];
+        createPanel();
+        this.test = test;
+        this.test.init(lienzo, top);
+        this.test.run();
+    }
+
+    private void createPanel() {
         if (this.test != null) {
             this.test.destroy();
             this.test = null;
+        }
+        if (null != panelDiv) {
+            panelDiv.remove();
+            panelDiv = null;
         }
 
         panelDiv = (HTMLDivElement) document.createElement("div");
@@ -89,7 +107,8 @@ public class BaseLienzoExamples {
         HTMLDivElement main = (HTMLDivElement) document.getElementById("main");
         main.appendChild(panelDiv);
 
-        lienzo = test.createPanel();
+        // TODO: rollback to this -> lienzo = test.createPanel();
+        lienzo = LienzoFixedPanel.newPanel(1200, 600);
 
         panelDiv.appendChild(lienzo.getElement());
 
@@ -101,6 +120,7 @@ public class BaseLienzoExamples {
     }
 
     private void applyGrid(final LienzoPanel panel) {
+        // Grid.
         Line line1 = new Line(0, 0, 0, 0)
                 .setStrokeColor("#0000FF")
                 .setAlpha(0.2);

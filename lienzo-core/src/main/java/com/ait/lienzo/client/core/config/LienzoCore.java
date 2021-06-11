@@ -96,9 +96,14 @@ public final class LienzoCore {
 
     private final ArrayList<ILienzoPlugin> m_plugins = new ArrayList<>();
 
+    public static HTMLCanvasElement createCanvas() {
+        return Js.uncheckedCast(DomGlobal.document.createElement("canvas"));
+
+    }
+
     private static boolean isCanvasSupported() {
 
-        HTMLCanvasElement canvas = Js.uncheckedCast(DomGlobal.document.createElement("canvas"));
+        HTMLCanvasElement canvas = createCanvas();
         return (canvas != null && Js.asPropertyMap(canvas).has("getContext"));
     }
 
