@@ -94,6 +94,7 @@ import com.ait.lienzo.tools.client.event.HandlerRegistration;
 import com.ait.lienzo.tools.client.event.INodeEvent;
 import com.ait.lienzo.tools.client.event.INodeEvent.Type;
 import com.ait.lienzo.tools.common.api.java.util.UUID;
+import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 import jsinterop.base.Js;
@@ -206,6 +207,7 @@ public abstract class Node<T extends Node<T>> implements IDrawable<T> {
         return false;
     }
 
+    @JsIgnore
     protected Node(final NodeType type) {
         m_type = type;
 

@@ -45,6 +45,7 @@ import com.ait.lienzo.shared.core.types.LineJoin;
 import com.ait.lienzo.shared.core.types.NodeType;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import elemental2.dom.Path2D;
+import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
@@ -109,6 +110,7 @@ public abstract class Shape<T extends Shape<T>> extends Node<T> implements IPrim
     @JsProperty
     private double miterLimit = 0;
 
+    @JsIgnore
     protected Shape(final ShapeType type) {
         super(NodeType.SHAPE);
 

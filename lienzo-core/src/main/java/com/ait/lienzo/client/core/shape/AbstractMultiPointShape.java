@@ -48,6 +48,7 @@ import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.DragMode;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import com.ait.lienzo.tools.client.event.HandlerRegistrationManager;
+import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsProperty;
 
 public abstract class AbstractMultiPointShape<T extends AbstractMultiPointShape<T> & IMultiPointShape<T>> extends Shape<T> implements IMultiPointShape<T> {
@@ -57,6 +58,7 @@ public abstract class AbstractMultiPointShape<T extends AbstractMultiPointShape<
 
     private final PathPartList m_list = new PathPartList();
 
+    @JsIgnore
     protected AbstractMultiPointShape(final ShapeType type) {
         super(type);
     }
