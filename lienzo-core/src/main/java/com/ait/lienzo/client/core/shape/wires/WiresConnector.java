@@ -685,13 +685,13 @@ public class WiresConnector {
         IDirectionalMultiPointShape<?> line = connector.getLine();
         ScratchPad scratch = line.getScratchPad();
         scratch.clear();
-        PathPartList path = line.asShape().getPathPartList();
+        PathPartList path = line.getPathPartList();
         int pointsIndex = 1;
         String color = MagnetManager.m_c_rotor.next();
         colorMap.put(color,
                      pointsIndex);
         Context2D ctx = scratch.getContext();
-        double strokeWidth = line.asShape().getStrokeWidth();
+        double strokeWidth = line.getStrokeWidth();
         //setting a minimum stroke width to makeXY finding a close point to the connector easier
         ctx.setStrokeWidth((strokeWidth < MINIMUM_STROKE_WITH ? MINIMUM_STROKE_WITH : strokeWidth));
 
@@ -843,11 +843,11 @@ public class WiresConnector {
 
     public static boolean updateHeadTailForRefreshedConnector(WiresConnector c) {
         // Iterate each refreshed line and get the new points for the decorators
-        if (c.getLine().asShape().getPathPartList().size() < 1) {
+        if (c.getLine().getPathPartList().size() < 1) {
             // only do this for lines that have had refresh called
             IDirectionalMultiPointShape<?> line = c.getLine();
 
-            if (c.isSpecialConnection() && line.asShape().getPathPartList().size() == 0) {
+            if (c.isSpecialConnection() && line.getPathPartList().size() == 0) {
                 // if getPathPartList is empty, it was refreshed due to a point change
                 c.updateForSpecialConnections(false);
             }

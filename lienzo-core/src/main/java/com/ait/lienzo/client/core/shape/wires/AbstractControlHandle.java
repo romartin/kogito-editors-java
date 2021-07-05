@@ -17,6 +17,7 @@
 package com.ait.lienzo.client.core.shape.wires;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
+import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.tools.client.event.HandlerRegistration;
 import com.ait.lienzo.tools.client.event.HandlerRegistrationManager;
 import com.ait.lienzo.tools.common.api.types.Activatable;
@@ -27,6 +28,18 @@ public abstract class AbstractControlHandle extends Activatable implements ICont
 
     protected AbstractControlHandle() {
         super(true);
+    }
+
+    @Override
+    public Point2D getLocation() {
+        return getControl().getLocation();
+    }
+
+    @Override
+    public IControlHandle setLocation(double x, double y) {
+        getControl().setX(x);
+        getControl().setY(y);
+        return this;
     }
 
     protected HandlerRegistration register(final HandlerRegistration handler) {

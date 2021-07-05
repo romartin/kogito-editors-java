@@ -16,10 +16,9 @@ import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLOptionElement;
 import elemental2.dom.HTMLSelectElement;
+import elemental2.dom.HTMLTextAreaElement;
 import org.kie.lienzo.client.util.Console;
 import org.kie.lienzo.client.util.Util;
-
-import static elemental2.dom.DomGlobal.document;
 
 public abstract class BaseExample implements Example {
 
@@ -105,6 +104,18 @@ public abstract class BaseExample implements Example {
         return div;
     }
 
+    public static HTMLTextAreaElement createText(String text,
+                                                 Runnable changeCallback) {
+        HTMLTextAreaElement element = (HTMLTextAreaElement) DomGlobal.document.createElement("textarea");
+        element.textContent = text;
+        setMargins(element);
+        element.onchange = (e) -> {
+            changeCallback.run();
+            return null;
+        };
+        return element;
+    }
+
     public static HTMLButtonElement createButton(String text,
                                                  Runnable clickCallback) {
         HTMLButtonElement button = (HTMLButtonElement) DomGlobal.document.createElement("button");
@@ -119,7 +130,7 @@ public abstract class BaseExample implements Example {
 
     public static HTMLSelectElement createSelect(Map<String, String> options,
                                                  Consumer<String> selectCallback) {
-        HTMLSelectElement select = (HTMLSelectElement) document.createElement("select");
+        HTMLSelectElement select = (HTMLSelectElement) DomGlobal.document.createElement("select");
         options.entrySet().forEach(entry -> addOption(select, entry.getKey(), entry.getValue()));
         setMargins(select);
         select.onchange = (e) -> {
@@ -133,7 +144,7 @@ public abstract class BaseExample implements Example {
     public static void addOption(HTMLSelectElement select,
                                  String label,
                                  String value) {
-        HTMLOptionElement option = (HTMLOptionElement) document.createElement("option");
+        HTMLOptionElement option = (HTMLOptionElement) DomGlobal.document.createElement("option");
         option.label = label;
         option.value = value;
         select.add(option);

@@ -16,10 +16,12 @@
 
 package com.ait.lienzo.client.core.shape;
 
+import com.ait.lienzo.client.core.types.PathPartList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.shared.core.types.Direction;
 
-public interface IDirectionalMultiPointShape<T extends Shape<T> & IDirectionalMultiPointShape<T>> extends IOffsetMultiPointShape<T> {
+public interface IDirectionalMultiPointShape<T extends IPrimitive<T> & IDirectionalMultiPointShape<T>>
+        extends IOffsetMultiPointShape<T> {
 
     T setTailDirection(Direction direction);
 
@@ -35,7 +37,17 @@ public interface IDirectionalMultiPointShape<T extends Shape<T> & IDirectionalMu
 
     boolean isPathPartListPrepared();
 
+    PathPartList getPathPartList();
+
     Point2D adjustPoint(double x, double y, double deltaX, double deltaY);
 
     T cloneLine();
+
+    T setSelectionStrokeOffset(double offset);
+
+    T setStrokeWidth(double width);
+
+    double getStrokeWidth();
+
+    T setStrokeColor(String stroke);
 }

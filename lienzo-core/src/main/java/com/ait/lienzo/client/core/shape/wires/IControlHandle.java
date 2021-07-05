@@ -19,14 +19,19 @@ package com.ait.lienzo.client.core.shape.wires;
 import java.util.Objects;
 
 import com.ait.lienzo.client.core.shape.IPrimitive;
+import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.tools.client.event.HandlerRegistrationManager;
 import com.ait.lienzo.tools.common.api.types.IActivatable;
 
 public interface IControlHandle extends IActivatable {
 
+    Point2D getLocation();
+
     IPrimitive<?> getControl();
 
     ControlHandleType getType();
+
+    IControlHandle setLocation(double x, double y);
 
     void destroy();
 

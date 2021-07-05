@@ -23,7 +23,8 @@ import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import jsinterop.annotations.JsProperty;
 
-public abstract class AbstractOffsetMultiPointShape<T extends AbstractOffsetMultiPointShape<T> & IOffsetMultiPointShape<T>> extends AbstractMultiPointShape<T> implements IOffsetMultiPointShape<T> {
+public abstract class AbstractOffsetMultiPointShape<T extends AbstractOffsetMultiPointShape<T> & IOffsetMultiPointShape<T>>
+        extends AbstractMultiPointShape<T> implements IOffsetMultiPointShape<T> {
 
     @JsProperty
     private double headOffset;

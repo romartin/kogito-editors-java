@@ -40,6 +40,7 @@ import com.ait.lienzo.client.widget.DragConstraintEnforcer;
 import com.ait.lienzo.client.widget.DragContext;
 import com.ait.lienzo.tools.client.collection.NFastDoubleArray;
 import com.ait.lienzo.tools.client.event.HandlerRegistrationManager;
+import elemental2.dom.DomGlobal;
 
 /**
  * This class can be a little confusing, due to the way that drag works. All lines have a Group that is x=0, y=0. when
@@ -137,6 +138,7 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
         for (int i = start, j = (start == 0) ? start : 2; i < end; i++, j += 2) {
             if (isConnected) {
                 Point2D p = points.get(i);
+                DomGlobal.console.log("Connector Ctrl - Set Line Points");
                 p.setX(m_startPointHandles.get(j) + dx);
                 p.setY(m_startPointHandles.get(j + 1) + dy);
             }

@@ -16,12 +16,15 @@
 
 package com.ait.lienzo.client.core.shape.wires;
 
+import java.util.Map;
+
 import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.shared.core.types.ArrowEnd;
 import com.ait.lienzo.shared.core.types.Direction;
+import elemental2.dom.DomGlobal;
 
 public class WiresConnection extends AbstractControlHandle {
 
@@ -32,8 +35,6 @@ public class WiresConnection extends AbstractControlHandle {
     private final MultiPath m_endPath;
 
     private ArrowEnd m_end;
-
-    private Point2D m_point;
 
     private boolean m_autoConnection;
 
@@ -48,28 +49,27 @@ public class WiresConnection extends AbstractControlHandle {
         m_line = connector.getLine();
         m_endPath = endPath;
         m_end = end;
-        m_point = (end == ArrowEnd.HEAD) ? m_line.getPoint2DArray().get(0) : m_line.getPoint2DArray().get(m_line.getPoint2DArray().size() - 1);
         m_end = end;
     }
 
     public WiresConnection move(final double x, final double y) {
-        m_point.setX(x + m_xOffset);
-
-        m_point.setY(y + m_yOffset);
-
-        m_line.refresh();
-
+        DomGlobal.console.log("MOVE CONNECTION");
         IControlHandle handle;
-
+        // Map<ControlHandleType, IControlHandleList> handles = m_connector.getPointHandles();
+        IControlHandleList handles = m_connector.getLine().getControlHandles(ControlHandleStandardType.POINT).get(ControlHandleStandardType.POINT);
+        //IControlHandleList handles = m_connector.getLine().getControlHandles(getType()).get(getType());
         if (m_end == ArrowEnd.HEAD) {
-            handle = m_connector.getPointHandles().getHandle(0);
+            handle = handles.getHandle(0);
         } else {
-            handle = m_connector.getPointHandles().getHandle(m_connector.getPointHandles().size() - 1);
+            handle = handles.getHandle(handles.size() - 1);
         }
-        if (handle != null && handle.getControl() != null) {
-            handle.getControl().setX(x + m_xOffset);
-
-            handle.getControl().setY(y + m_yOffset);
+        if (handle != null) {
+            double rx = x + m_xOffset;
+            double ry = y + m_yOffset;
+            handle.setLocation(rx, ry);
+            m_line.refresh();
+            handle.getControl().setX(rx);
+            handle.getControl().setY(ry);
         }
         if (m_line.getLayer() != null) {
             m_line.getLayer().batch();
@@ -128,6 +128,7 @@ public class WiresConnection extends AbstractControlHandle {
         }
 
         if (magnet != null) {
+            DomGlobal.console.log("SETTING MAGNET");
             magnet.addHandle(this);
 
             Point2D absLoc = magnet.getControl().getComputedLocation();
@@ -156,11 +157,12 @@ public class WiresConnection extends AbstractControlHandle {
     }
 
     public Point2D getPoint() {
-        return m_point;
+        // TODO: Check this...
+        return (m_end == ArrowEnd.HEAD) ? m_line.getPoint2DArray().get(0) : m_line.getPoint2DArray().get(m_line.getPoint2DArray().size() - 1);
     }
 
     public void setPoint(Point2D point) {
-        this.m_point = point;
+        // TODO
     }
 
     public WiresMagnet getMagnet() {
