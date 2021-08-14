@@ -45,6 +45,7 @@ import com.ait.lienzo.tools.client.event.HandlerRegistration;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.ImageData;
 
+import static com.ait.lienzo.client.core.shape.wires.IControlHandle.ControlHandleStandardType.OFFSET;
 import static com.ait.lienzo.client.core.shape.wires.IControlHandle.ControlHandleStandardType.POINT;
 
 public class WiresConnector {
@@ -56,6 +57,8 @@ public class WiresConnector {
     private WiresConnection m_tailConnection;
 
     private IControlHandleList m_pointHandles;
+
+    private IControlHandleList m_offsetHandles;
 
     private IDirectionalMultiPointShape<?> m_line;
 
@@ -230,7 +233,11 @@ public class WiresConnector {
         if (m_pointHandles != null) {
             m_pointHandles.destroy();
         }
+        if (null != m_offsetHandles) {
+            m_offsetHandles.destroy();
+        }
         m_pointHandles = null;
+        m_offsetHandles = null;
     }
 
     public IControlHandleList getPointHandles() {
@@ -238,6 +245,13 @@ public class WiresConnector {
             m_pointHandles = m_line.getControlHandles(POINT).get(POINT);
         }
         return m_pointHandles;
+    }
+
+    public IControlHandleList getOffsetHandles() {
+        if (m_offsetHandles == null || m_offsetHandles.isEmpty()) {
+            m_offsetHandles = m_line.getControlHandles(OFFSET).get(OFFSET);
+        }
+        return m_offsetHandles;
     }
 
     public void updateForSpecialConnections(boolean isAcceptOp) {
@@ -249,9 +263,15 @@ public class WiresConnector {
         WiresConnection headC = getHeadConnection();
         WiresConnection tailC = getTailConnection();
 
-        updateForCenterConnection(this, headC, 1);
-        updateForCenterConnection(this, tailC, getLine().getPoint2DArray().size() - 2);
+        // TODO: Compare with some other point for not loosing actual CPs when dragging around? See Ref (*)
+        updateForCenterConnection(this, headC, getLine().getPoint2DArray().size() - 1);
+        updateForCenterConnection(this, tailC, 0);
     }
+
+    // TODO: Ref (*)
+    // - If no orthgonoal segment, use next point (1 or size-2)
+    // - If ortho segment? Use first / last?
+    // - Delegate to line impl?
 
     public static void updateForCenterConnection(WiresConnector connector, WiresConnection connection, int pointIndex) {
         if (connection.getMagnet() != null && connection.getMagnet().getIndex() == 0) {
@@ -335,7 +355,7 @@ public class WiresConnector {
     }
 
     /**
-     * This is making some assumptions that will have to be fixed for anythign other than 8 Magnets at compass ordinal points.
+     * This is making some assumptions that will have to be fixed for anythigng other than 8 Magnets at compass ordinal points.
      * If there is no shape overlap, and one box is in the corner of the other box, then use nearest corner connections, else use nearest mid connection.
      * Else there is overlap. This is now much more difficult, so just pick which every has the the shortest distanceto connections not contained by the other shape.
      */
@@ -366,9 +386,11 @@ public class WiresConnector {
     }
 
     private WiresMagnet[] getMagnetsWithMidPoint(WiresConnection headC, WiresConnection tailC, WiresShape headS, WiresShape tailS, BoundingBox headBox, BoundingBox tailBox) {
-        // makeXY BB's of 1 Point2D, then we can reuse existing code.
-        Point2D pAfterHead = getLine().getPoint2DArray().get(1);
-        Point2D pBeforeTail = getLine().getPoint2DArray().get(getLine().getPoint2DArray().size() - 2);
+        // TODO: Compare with some other point for not loosing actual CPs when dragging around? See Ref (*)
+        // Point2D pAfterHead = getLine().getPoint2DArray().get(1);
+        Point2D pAfterHead = getLine().getPoint2DArray().get(getLine().getPoint2DArray().size() - 1);
+        // Point2D pBeforeTail = getLine().getPoint2DArray().get(getLine().getPoint2DArray().size() - 2);
+        Point2D pBeforeTail = getLine().getPoint2DArray().get(0);
 
         BoundingBox firstBB = BoundingBox.fromArrayOfPoint2D(pAfterHead, pAfterHead);
         BoundingBox lastBB = BoundingBox.fromArrayOfPoint2D(pBeforeTail, pBeforeTail);
@@ -417,6 +439,10 @@ public class WiresConnector {
         return shortestM;
     }
 
+    private void logPositionRelative(String s) {
+        // DomGlobal.console.log(s);
+    }
+
     private WiresMagnet[] getMagnetsNonOverlappedShapes(WiresShape headS, WiresShape tailS, BoundingBox headBox, BoundingBox tailBox) {
         // There is no shape overlap.
         // If one box is in the corner of the other box, then use nearest corner connections
@@ -426,32 +452,43 @@ public class WiresConnector {
         boolean headLeft = headBox.getMaxX() < tailBox.getMinX();
         boolean headRight = headBox.getMinX() > tailBox.getMaxX();
 
-        WiresMagnet[] magets = null;
+        // {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        // {0, 1, 1, 2, 3, 3, 3, 4, 1};
+        WiresMagnet[] magnets = null;
         if (headAbove) {
             if (headLeft) {
-                magets = getMagnets(headS, 4, tailS, 8);
+                logPositionRelative("HEAD ABOVE + LEFT");
+                magnets = getMagnets(headS, 3, tailS, 7);
             } else if (headRight) {
-                magets = getMagnets(headS, 6, tailS, 2);
+                logPositionRelative("HEAD ABOVE + RIGHT");
+                magnets = getMagnets(headS, 6, tailS, 2);
             } else {
-                magets = getMagnets(headS, 5, tailS, 1);
+                logPositionRelative("HEAD ABOVE");
+                magnets = getMagnets(headS, 5, tailS, 1);
             }
         } else if (headBelow) {
             if (headLeft) {
-                magets = getMagnets(headS, 2, tailS, 6);
+                logPositionRelative("HEAD BELOW + LEFT");
+                magnets = getMagnets(headS, 2, tailS, 6);
             } else if (headRight) {
-                magets = getMagnets(headS, 8, tailS, 4);
+                logPositionRelative("HEAD BELOW + RIGHT");
+                magnets = getMagnets(headS, 8, tailS, 4);
             } else {
-                magets = getMagnets(headS, 1, tailS, 5);
+                logPositionRelative("HEAD BELOW");
+                magnets = getMagnets(headS, 1, tailS, 5);
             }
         } else {
             if (headLeft) {
-                magets = getMagnets(headS, 3, tailS, 7);
+                logPositionRelative("HEAD LEFT");
+                magnets = getMagnets(headS, 3, tailS, 7);
             } else if (headRight) {
-                magets = getMagnets(headS, 7, tailS, 3);
+                logPositionRelative("HEAD RIGHT");
+                magnets = getMagnets(headS, 7, tailS, 3);
             }
         }
 
-        return magets;
+        logPositionRelative("MAGNETS = [" + magnets[0] + ", " + magnets[1] + "]");
+        return magnets;
     }
 
     private WiresMagnet[] getMagnetsOverlappedShapesOrNoShape(WiresConnection headC, WiresConnection tailC, WiresShape headS, WiresShape tailS, BoundingBox headBox, BoundingBox tailBox) {
@@ -610,18 +647,7 @@ public class WiresConnector {
         setPoints(newPoints);
     }
 
-    public void moveControlPoint(final int index,
-                                 final Point2D location) {
-        getControlPoints().set(index, location);
-
-        final IPrimitive<?> point = getControlPoint(index);
-        if (null != point) {
-            point.setLocation(location);
-            firePointsUpdated();
-        }
-    }
-
-    private void setPoints(final Point2DArray points) {
+    public void setPoints(final Point2DArray points) {
         getLine().setPoint2DArray(points);
         firePointsUpdated();
     }

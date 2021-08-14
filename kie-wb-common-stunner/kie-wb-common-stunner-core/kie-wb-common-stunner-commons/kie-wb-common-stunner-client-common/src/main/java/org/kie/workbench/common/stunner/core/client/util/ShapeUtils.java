@@ -32,6 +32,7 @@ import org.kie.workbench.common.stunner.core.client.shape.Shape;
 import org.kie.workbench.common.stunner.core.client.shape.impl.ConnectorShape;
 import org.kie.workbench.common.stunner.core.client.shape.view.BoundingBox;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasDragBounds;
+import org.kie.workbench.common.stunner.core.client.shape.view.HasManageableControlPoints;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasRadius;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasSize;
 import org.kie.workbench.common.stunner.core.client.shape.view.ShapeView;
@@ -40,6 +41,7 @@ import org.kie.workbench.common.stunner.core.graph.Node;
 import org.kie.workbench.common.stunner.core.graph.content.Bounds;
 import org.kie.workbench.common.stunner.core.graph.content.relationship.Child;
 import org.kie.workbench.common.stunner.core.graph.content.view.Connection;
+import org.kie.workbench.common.stunner.core.graph.content.view.ControlPoint;
 import org.kie.workbench.common.stunner.core.graph.content.view.MagnetConnection;
 import org.kie.workbench.common.stunner.core.graph.content.view.Point2D;
 import org.kie.workbench.common.stunner.core.graph.content.view.View;
@@ -94,6 +96,14 @@ public class ShapeUtils {
                 .ifPresent(connection -> updateEdgeConnection(context,
                                                               connection,
                                                               target));
+
+        // TODO: Finally go ahead with this? Update edge CPs (model), from the view (lienzo) inferred ones
+        final Shape<ShapeView<?>> edgeShape = context.getCanvas().getShape(edge.getUUID());
+        final ShapeView<?> edgeView = edgeShape.getShapeView();
+        if (edgeView instanceof HasManageableControlPoints) {
+            ControlPoint[] controlPoints = ((HasManageableControlPoints<?>) edgeView).getManageableControlPoints();
+            edge.getContent().setControlPoints(controlPoints);
+        }
     }
 
     @SuppressWarnings("unchecked")

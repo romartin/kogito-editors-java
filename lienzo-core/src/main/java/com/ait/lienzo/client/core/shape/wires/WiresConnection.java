@@ -16,9 +16,11 @@
 
 package com.ait.lienzo.client.core.shape.wires;
 
+import com.ait.lienzo.client.core.shape.AbstractMultiPointShape;
 import com.ait.lienzo.client.core.shape.IDirectionalMultiPointShape;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
+import com.ait.lienzo.client.core.shape.OrthogonalNewPolyLine;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.shared.core.types.ArrowEnd;
 import com.ait.lienzo.shared.core.types.Direction;
@@ -53,25 +55,19 @@ public class WiresConnection extends AbstractControlHandle {
     }
 
     public WiresConnection move(final double x, final double y) {
-        m_point.setX(x + m_xOffset);
-
-        m_point.setY(y + m_yOffset);
-
-        m_line.refresh();
-
-        IControlHandle handle;
-
-        if (m_end == ArrowEnd.HEAD) {
-            handle = m_connector.getPointHandles().getHandle(0);
-        } else {
-            handle = m_connector.getPointHandles().getHandle(m_connector.getPointHandles().size() - 1);
+        int handleIndex = 0;
+        if (m_end != ArrowEnd.HEAD) {
+            handleIndex = m_connector.getPointHandles().size() - 1;
         }
+        AbstractMultiPointShape.DefaultMultiPointShapeHandleFactory.ConnectionHandle handle = (AbstractMultiPointShape.DefaultMultiPointShapeHandleFactory.ConnectionHandle) m_connector.getPointHandles().getHandle(handleIndex);
         if (handle != null && handle.getControl() != null) {
+            handle.move(x + m_xOffset, y + m_yOffset);
             handle.getControl().setX(x + m_xOffset);
-
             handle.getControl().setY(y + m_yOffset);
         }
-        if (m_line.getLayer() != null) {
+        // TODO: Drop calls to refresh & batch?
+        // m_line.refresh();
+        if (false && m_line.getLayer() != null) {
             m_line.getLayer().batch();
         }
         m_connector.firePointsUpdated();
@@ -129,6 +125,14 @@ public class WiresConnection extends AbstractControlHandle {
 
         if (magnet != null) {
             magnet.addHandle(this);
+
+            if (m_line instanceof OrthogonalNewPolyLine) {
+                if (m_end == ArrowEnd.HEAD) {
+                    ((OrthogonalNewPolyLine) m_line).isFirstSegmentOrthogonal = magnet.getIndex() != 0;
+                } else {
+                    ((OrthogonalNewPolyLine) m_line).isLastSegmentOrthogonal = magnet.getIndex() != 0;
+                }
+            }
 
             Point2D absLoc = magnet.getControl().getComputedLocation();
 

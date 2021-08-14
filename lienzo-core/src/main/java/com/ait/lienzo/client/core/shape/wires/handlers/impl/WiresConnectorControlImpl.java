@@ -20,6 +20,7 @@ import com.ait.lienzo.client.core.event.NodeDragEndEvent;
 import com.ait.lienzo.client.core.event.NodeDragEndHandler;
 import com.ait.lienzo.client.core.event.NodeDragStartEvent;
 import com.ait.lienzo.client.core.event.NodeDragStartHandler;
+import com.ait.lienzo.client.core.shape.AbstractMultiPointShape.DefaultMultiPointShapeHandleFactory.SegmentHandle;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.wires.IControlHandle;
@@ -35,11 +36,11 @@ import com.ait.lienzo.client.core.shape.wires.handlers.WiresConnectorControl;
 import com.ait.lienzo.client.core.shape.wires.handlers.WiresControlPointHandler;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Point2DArray;
-import com.ait.lienzo.client.widget.DefaultDragConstraintEnforcer;
 import com.ait.lienzo.client.widget.DragConstraintEnforcer;
 import com.ait.lienzo.client.widget.DragContext;
 import com.ait.lienzo.tools.client.collection.NFastDoubleArray;
 import com.ait.lienzo.tools.client.event.HandlerRegistrationManager;
+import elemental2.dom.DomGlobal;
 
 /**
  * This class can be a little confusing, due to the way that drag works. All lines have a Group that is x=0, y=0. when
@@ -165,7 +166,7 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
     @Override
     public void execute() {
         WiresConnector.updateHeadTailForRefreshedConnector(m_connector);
-        getControlPointsAcceptor().move(m_connector,
+        getControlPointsAcceptor().update(m_connector,
                                         m_connector.getControlPoints().copy());
     }
 
@@ -280,31 +281,26 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
     }
 
     @Override
-    public boolean moveControlPoint(final int index,
-                                    final Point2D location) {
-        final Point2DArray controlPoints = m_connector.getControlPoints();
-
-        // Notice that control points [0] and [controlPoints.size - 1] are being used for the connections as well,
-        // so they're being updated anyway on other event handlers - it must return "true" in that case.
-        if (index > 0 && index < (controlPoints.size() - 1)) {
-            return getControlPointsAcceptor().move(m_connector,
-                                                   controlPoints.copy().set(index, location));
-        }
-        return true;
+    public boolean updateControlPoints(final Point2DArray candidatePoints) {
+        return getControlPointsAcceptor().update(m_connector,
+                                               candidatePoints);
     }
 
     public void showPointHandles() {
         if (m_HandlerRegistrationManager == null) {
 
-            m_HandlerRegistrationManager = m_connector.getPointHandles().getHandlerRegistrationManager();
+            IControlHandleList pointHandles = m_connector.getPointHandles();
+            IControlHandleList offsetHandles = m_connector.getOffsetHandles();
+            m_HandlerRegistrationManager = pointHandles.getHandlerRegistrationManager();
 
-            m_connector.getPointHandles().show();
+            pointHandles.show();
+            offsetHandles.show();
 
             final WiresControlPointHandler controlPointsHandler =
                     m_wiresManager.getWiresHandlerFactory().newControlPointHandler(m_connector, m_wiresManager);
             final ControlPointDecoratorHandler controlHandleDecoratorHandler = new ControlPointDecoratorHandler();
-            for (int i = 1; i < m_connector.getPointHandles().size() - 1; i++) {
-                final IControlHandle handle = m_connector.getPointHandles().getHandle(i);
+            for (int i = 1; i < pointHandles.size() - 1; i++) {
+                final IControlHandle handle = pointHandles.getHandle(i);
                 final Shape<?> shape = handle.getControl().asShape();
                 m_HandlerRegistrationManager.register(shape.addNodeMouseClickHandler(controlPointsHandler));
                 m_HandlerRegistrationManager.register(shape.addNodeMouseDoubleClickHandler(controlPointsHandler));
@@ -314,9 +310,20 @@ public class WiresConnectorControlImpl implements WiresConnectorControl {
                 m_HandlerRegistrationManager.register(shape.addNodeDragStartHandler(controlHandleDecoratorHandler));
                 m_HandlerRegistrationManager.register(shape.addNodeDragEndHandler(controlHandleDecoratorHandler));
                 m_pointHandleDecorator.decorate(shape, ShapeState.VALID);
-                //enforce drag constraints on the point handles
-                shape.setDragConstraints(new DefaultDragConstraintEnforcer());
-                shape.setDragBounds(m_connector.getGroup().getDragBounds());
+                shape.moveToTop();
+            }
+
+            for (int i = 0; i < offsetHandles.size(); i++) {
+                final SegmentHandle handle = (SegmentHandle) offsetHandles.getHandle(i);
+                final Shape<?> shape = handle.getControl().asShape();
+                // TODO: Create offset handler instance via WiresHandlerFactory ?
+                m_HandlerRegistrationManager.register(shape.addNodeDragEndHandler(new NodeDragEndHandler() {
+                    @Override
+                    public void onNodeDragEnd(NodeDragEndEvent event) {
+                        handle.move(); // TODO: Needs to call it again here? SegmentHandle internals already does this.
+                        updateControlPoints(m_connector.getControlPoints());
+                    }
+                }));
                 shape.moveToTop();
             }
 

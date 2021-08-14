@@ -188,23 +188,23 @@ public class MagnetConnection extends DiscreteConnection {
             final Bounds sourceBounds = source.getContent().getBounds();
             final Bounds targetBounds = target.getContent().getBounds();
 
-            //Simple non-overlapping cases...
-            if (targetPosition.getY() + targetBounds.getHeight() < sourcePosition.getY()) {
-                return RelativePosition.ABOVE;
-            }
-            if (targetPosition.getY() > sourcePosition.getY() + sourceBounds.getHeight()) {
-                return RelativePosition.BELOW;
-            }
             if (targetPosition.getX() + targetBounds.getWidth() < sourcePosition.getX()) {
                 return RelativePosition.LEFT;
             }
             if (targetPosition.getX() > sourcePosition.getX() + sourceBounds.getWidth()) {
                 return RelativePosition.RIGHT;
             }
+            if (targetPosition.getY() + targetBounds.getHeight() < sourcePosition.getY()) {
+                return RelativePosition.ABOVE;
+            }
+            if (targetPosition.getY() > sourcePosition.getY() + sourceBounds.getHeight()) {
+                return RelativePosition.BELOW;
+            }
 
             return RelativePosition.CENTRE;
         }
 
+        // TODO: Review all uses of atCenter and replace by auto-magnet by default, but only for BPMN?
         public static MagnetConnection atCenter(final Element<? extends View<?>> element) {
             return atLocation(element,
                               MAGNET_CENTER,

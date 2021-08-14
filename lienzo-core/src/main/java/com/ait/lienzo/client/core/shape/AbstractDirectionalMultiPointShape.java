@@ -27,13 +27,14 @@ import com.ait.lienzo.shared.core.types.Direction;
 import com.ait.lienzo.shared.core.types.ShapeType;
 import jsinterop.annotations.JsProperty;
 
-public abstract class AbstractDirectionalMultiPointShape<T extends AbstractDirectionalMultiPointShape<T> & IDirectionalMultiPointShape<T>> extends AbstractOffsetMultiPointShape<T> implements IDirectionalMultiPointShape<T> {
+public abstract class AbstractDirectionalMultiPointShape<T extends AbstractDirectionalMultiPointShape<T> & IDirectionalMultiPointShape<T>>
+        extends AbstractOffsetMultiPointShape<T> implements IDirectionalMultiPointShape<T> {
 
     @JsProperty
-    private Direction headDirection;
+    protected Direction headDirection;
 
     @JsProperty
-    private Direction tailDirection;
+    protected Direction tailDirection;
 
     @JsProperty
     private double correctionOffset = LienzoCore.get().getDefaultConnectorOffset();

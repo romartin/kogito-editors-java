@@ -98,6 +98,8 @@ public class WiresMagnet extends AbstractControlHandle implements Iterable<Wires
                 WiresConnection h = m_connections.get(i);
 
                 h.move(m_x + x, m_y + y);
+                // TODO: Just forcing line refresh, to see line changing while dragging connections - but only refreshing here?
+                h.getLine().refresh();
             }
         }
     }

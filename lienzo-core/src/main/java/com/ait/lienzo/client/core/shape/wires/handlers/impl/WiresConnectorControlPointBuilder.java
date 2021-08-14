@@ -225,6 +225,12 @@ public class WiresConnectorControlPointBuilder {
                 listenForControlPoint(events,
                                       handle.getControl());
             }
+            IControlHandleList offsetHandles = connector.getOffsetHandles();
+            for (int i = 0; i < offsetHandles.size(); i++) {
+                final IControlHandle handle = offsetHandles.getHandle(i);
+                listenForControlPoint(events,
+                                      handle.getControl());
+            }
             // Listen for head connection events.
             final WiresConnection headConnection = connector.getHeadConnection();
             listenForConnection(events, headConnection);

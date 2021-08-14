@@ -17,13 +17,13 @@
 package org.kie.workbench.common.stunner.shapes.client.factory;
 
 import com.ait.lienzo.client.core.shape.AbstractDirectionalMultiPointShape;
-import com.ait.lienzo.client.core.shape.PolyLine;
+import com.ait.lienzo.client.core.shape.OrthogonalNewPolyLine;
 import com.ait.lienzo.client.core.types.Point2DArray;
 
 public class PolyLineConnectorFactory implements LineConnectorFactory {
 
     @Override
     public AbstractDirectionalMultiPointShape<?> createLine(Point2DArray points) {
-        return new PolyLine(points);
+        return OrthogonalNewPolyLine.inferPoints(points);
     }
 }
