@@ -40,43 +40,39 @@ import com.ait.lienzo.shared.core.types.NodeType;
  */
 public class DragContext {
 
-    protected int m_evtx;
+    private int m_evtx;
 
-    protected int m_evty;
+    private int m_evty;
 
-    protected int m_dstx;
+    private int m_dstx;
 
-    protected int m_dsty;
+    private int m_dsty;
 
-    protected double m_offsetx;
+    private double m_lstx;
 
-    protected double m_offsety;
+    private double m_lsty;
 
-    protected double m_lstx;
+    private final Transform m_gtol;
 
-    protected double m_lsty;
+    private final Transform m_ltog;
 
-    protected final Transform m_gtol;
+    private final Transform m_vtog;
 
-    protected final Transform m_ltog;
+    private final IPrimitive<?> m_prim;
 
-    protected final Transform m_vtog;
+    private final double m_prmx;
 
-    protected final IPrimitive<?> m_prim;
+    private final double m_prmy;
 
-    protected final double m_prmx;
+    private final int m_begx;
 
-    protected final double m_prmy;
+    private final int m_begy;
 
-    protected final int m_begx;
+    private final DragConstraintEnforcer m_drag;
 
-    protected final int m_begy;
+    private final Point2D m_lclp = new Point2D(0, 0);
 
-    protected final DragConstraintEnforcer m_drag;
-
-    protected final Point2D m_lclp = new Point2D(0, 0);
-
-    protected final Point2D m_pref = new Point2D(0, 0);
+    private final Point2D m_pref = new Point2D(0, 0);
 
     /**
      * Starts a drag operation for the specified node.
@@ -149,7 +145,7 @@ public class DragContext {
      *
      * @return double
      */
-    protected final double getNodeParentsAlpha(Node<?> node) {
+    private final double getNodeParentsAlpha(Node<?> node) {
         double alpha = 1;
 
         node = node.getParent();
@@ -173,30 +169,10 @@ public class DragContext {
      * @param x
      * @param y
      */
-    public void dragMoveUpdate(final int x, final int y) {
+    public void dragUpdate(final int x, final int y) {
         m_evtx = x;
 
         m_evty = y;
-
-        dragUpdate();
-    }
-
-    /**
-     * Updates the context for the specified Drag Offset event.
-     * Used internally.
-     *
-     * @param offsetX
-     * @param offsetY
-     */
-    public void dragOffsetUpdate(final double offsetX, final double offsetY) {
-        m_offsetx += offsetX;
-
-        m_offsety += offsetY;
-
-        dragUpdate();
-    }
-
-    protected void dragUpdate() {
 
         m_dstx = m_evtx - m_begx;
 
@@ -206,14 +182,15 @@ public class DragContext {
 
         m_gtol.transform(new Point2D(m_dstx, m_dsty), p2);
 
-        m_lclp.setX(p2.getX() + m_offsetx - m_pref.getX());
+        m_lclp.setX(p2.getX() - m_pref.getX());
 
-        m_lclp.setY(p2.getY() + m_offsety - m_pref.getY());
+        m_lclp.setY(p2.getY() - m_pref.getY());
+
+        // Let the constraints adjust the location if necessary
 
         if (m_drag != null) {
             m_drag.adjust(m_lclp);
         }
-
         final double localX = m_prmx + m_lclp.getX();
 
         final double localY = m_prmy + m_lclp.getY();
@@ -224,6 +201,8 @@ public class DragContext {
         if (m_lsty != localY) {
             m_prim.setY(m_lsty = localY);
         }
+        //Console.get().info("2) m_prim " + m_evtx + ":" + m_evty + ":" + m_dstx + " : " + m_dsty + " : " + p2 + " : " + m_lclp + " : " + m_prim.getLocation());
+
     }
 
     /**
@@ -289,24 +268,6 @@ public class DragContext {
      */
     public int getEventY() {
         return m_evty;
-    }
-
-    /**
-     * Returns the horizontsal offset - i.e. event(x,y) of last drag offset
-     *
-     * @return
-     */
-    public double getOffsetX() {
-        return m_offsetx;
-    }
-
-    /**
-     * Returns the vertical offset - i.e. event(x,y) of last drag offset
-     *
-     * @return
-     */
-    public double getOffsetY() {
-        return m_offsety;
     }
 
     /**
@@ -388,21 +349,12 @@ public class DragContext {
     }
 
     /**
-     * Returns the offset - i.e. last drag offset
-     *
-     * @return
-     */
-    public Point2D getOffset() {
-        return new Point2D(getOffsetX(), getOffsetY());
-    }
-
-    /**
      * Returns the distance between the start and end in viewport coordinates
      *
      * @return
      */
     public Point2D getDistanceAdjusted() {
-        return getEventAdjusted().add(getOffset()).sub(getStartAdjusted());
+        return getEventAdjusted().sub(getStartAdjusted());
     }
 
     /**

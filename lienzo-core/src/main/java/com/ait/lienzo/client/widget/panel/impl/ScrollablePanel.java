@@ -15,14 +15,10 @@
  */
 package com.ait.lienzo.client.widget.panel.impl;
 
-import java.util.EnumSet;
-
-import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.style.Style;
 import com.ait.lienzo.client.core.style.Style.OutlineStyle;
-import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.panel.Bounds;
 import com.ait.lienzo.client.widget.panel.BoundsProvider;
@@ -30,7 +26,6 @@ import com.ait.lienzo.client.widget.panel.LienzoBoundsPanel;
 import com.ait.lienzo.client.widget.panel.LienzoPanel;
 import com.ait.lienzo.client.widget.panel.ResizeCallback;
 import com.ait.lienzo.client.widget.panel.ResizeObserver;
-import com.ait.lienzo.client.widget.panel.impl.LienzoPanelDragLimitEventDetail.LimitDirections;
 import elemental2.dom.CSSProperties;
 import elemental2.dom.Element;
 import elemental2.dom.EventListener;
@@ -42,8 +37,6 @@ import static com.ait.lienzo.client.widget.panel.util.LienzoPanelUtils.setPanelS
 public class ScrollablePanel extends LienzoBoundsPanel {
 
     private static final Bounds EMPTY = Bounds.empty();
-    private static final int DRAG_BOUNDS_LIMIT_SIZE = 50;
-    private static final int PADDING_OFFSET = 4;
 
     private final HTMLDivElement domElementContainer = createDiv();
     private final HTMLDivElement internalScrollPanel = createDiv();
@@ -58,12 +51,9 @@ public class ScrollablePanel extends LienzoBoundsPanel {
     private int widePx;
     private int highPx;
     private boolean isMouseDown = false;
-    private boolean isDragOverBounds = false;
-    private boolean isDragging;
-    private double lastPrimitiveX;
-    private double lastPrimitiveY;
     private ResizeObserver resizeObserver;
     private ResizeCallback m_resizeCallback;
+    private static int PADDING_OFFSET = 4;
 
     public static ScrollablePanel newPanel(final BoundsProvider layerBoundsProvider) {
         return new ScrollablePanel(layerBoundsProvider);
@@ -90,7 +80,6 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         domElementContainer.style.position = Style.Position.ABSOLUTE.getCssName();
         domElementContainer.style.zIndex = CSSProperties.ZIndexUnionType.of(1);
         synchronizeScrollSize();
-        initViewport();
         return this;
     }
 
@@ -101,21 +90,16 @@ public class ScrollablePanel extends LienzoBoundsPanel {
             if (transform == null) {
                 viewport.setTransform(transform = new Transform());
             }
-            final double x = -transform.getTranslateX() / transform.getScaleX();
-            final double y = -transform.getTranslateY() / transform.getScaleY();
+            final double x = transform.getTranslateX() / transform.getScaleX();
+            final double y = transform.getTranslateY() / transform.getScaleY();
             final Bounds bounds = Bounds.empty();
             bounds.setX(x);
             bounds.setY(y);
-            bounds.setWidth(Math.max(0, viewport.getWidth() / transform.getScaleY()));
             bounds.setHeight(Math.max(0, viewport.getHeight() / transform.getScaleX()));
+            bounds.setWidth(Math.max(0, viewport.getWidth() / transform.getScaleY()));
             return bounds;
         }
         return EMPTY;
-    }
-
-    @Override
-    public Bounds getDefaultBounds() {
-        return getVisibleBounds();
     }
 
     public EventListener addBoundsChangedEventListener(EventListener eventListener) {
@@ -254,23 +238,12 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         domElementContainer.addEventListener("mousewheel", mouseWheelListener);
         scrollPanel.addEventListener("scroll", scrollListener);
 
-        LienzoPanelEvents.addPrimitiveDragStartEventListener(getLienzoPanel(), evt -> isDragging = true);
-        LienzoPanelEvents.addPrimitiveDragMoveUpdateEventListener(getLienzoPanel(), evt -> {
-            LienzoPanelPrimitiveDragEventDetail detail = LienzoPanelPrimitiveDragEventDetail.getDragDetail(evt);
-            onPrimitiveDragMoveUpdate(detail.getPrimitive());
-        });
-        LienzoPanelEvents.addPrimitiveDragOffsetUpdateEventListener(getLienzoPanel(), evt -> {
-            LienzoPanelPrimitiveDragEventDetail detail = LienzoPanelPrimitiveDragEventDetail.getDragDetail(evt);
-            onPrimitiveDragOffsetUpdate(detail.getPrimitive(), detail.getDragX(), detail.getDragY());
-        });
-        LienzoPanelEvents.addPrimitiveDragEndEventListener(getLienzoPanel(), evt -> isDragging = false);
-
         // ResizeObserver callback.
         m_resizeCallback = e -> {
             if (isContainerStillOpened()) {
                 onScroll();
-                fitToParentSize();
-                refresh();
+                ScrollablePanel.this.fitToParentSize();
+                ScrollablePanel.this.refresh();
             }
         };
     }
@@ -280,10 +253,6 @@ public class ScrollablePanel extends LienzoBoundsPanel {
             resizeObserver = new ResizeObserver(m_resizeCallback);
             resizeObserver.observe((Element) this.getElement().parentNode.parentNode);
         }
-    }
-
-    private void initViewport() {
-        getViewport().addViewportTransformChangedHandler(event -> refresh());
     }
 
     @Override
@@ -320,73 +289,15 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         }
     }
 
-    private void onPrimitiveDragMoveUpdate(IPrimitive primitive) {
-        final double dragBoundsLimitsX = DRAG_BOUNDS_LIMIT_SIZE / getTransform().getScaleX();
-        final double dragBoundsLimitsY = DRAG_BOUNDS_LIMIT_SIZE / getTransform().getScaleY();
-
-        final BoundingBox primitiveBoundingBox =
-                BoundingBox.fromDoubles(primitive.getX(),
-                                        primitive.getY(),
-                                        primitive.getX() + primitive.getBoundingBox().getWidth(),
-                                        primitive.getY() + primitive.getBoundingBox().getHeight());
-
-        final BoundingBox visibleBoundingBox = new BoundingBox();
-        final Bounds visibleBounds = getVisibleBounds();
-        visibleBoundingBox.add(visibleBounds.getX() + dragBoundsLimitsX,
-                               visibleBounds.getY() + dragBoundsLimitsY);
-        visibleBoundingBox.add(visibleBounds.getX() + visibleBounds.getWidth() - dragBoundsLimitsX,
-                               visibleBounds.getY() + visibleBounds.getHeight() - dragBoundsLimitsY);
-
-        EnumSet<LimitDirections> limitDirections = EnumSet.noneOf(LimitDirections.class);
-        if (primitiveBoundingBox.getMinX() < visibleBoundingBox.getMinX()) {
-            limitDirections.add(LimitDirections.LEFT);
-        }
-        if (primitiveBoundingBox.getMaxX() > visibleBoundingBox.getMaxX()) {
-            limitDirections.add(LimitDirections.RIGHT);
-        }
-        if (primitiveBoundingBox.getMinY() < visibleBoundingBox.getMinY()) {
-            limitDirections.add(LimitDirections.TOP);
-        }
-        if (primitiveBoundingBox.getMaxY() > visibleBoundingBox.getMaxY()) {
-            limitDirections.add(LimitDirections.DOWN);
-        }
-
-        if (limitDirections.isEmpty()) {
-            if (isDragOverBounds) {
-                isDragOverBounds = false;
-                LienzoPanelEvents.fireDragLimitsOutEvent(this.getLienzoPanel());
-            }
-        } else {
-            isDragOverBounds = true;
-            LienzoPanelEvents.fireDragLimitsOverEvent(this.getLienzoPanel(), limitDirections);
-        }
-
-        lastPrimitiveX = primitive.getX();
-        lastPrimitiveY = primitive.getY();
-
-        refresh();
-    }
-
-    private void onPrimitiveDragOffsetUpdate(final IPrimitive primitive, final double offsetX, final double offsetY) {
-        if (lastPrimitiveX != primitive.getX() || lastPrimitiveY != primitive.getY()) {
-            lastPrimitiveX = primitive.getX();
-            lastPrimitiveY = primitive.getY();
-            getTransform().translate(-offsetX, -offsetY);
-            refresh();
-        }
-    }
-
     private void onScroll() {
-        if (!isDragging) {
-            // Prevent DOMElements scrolling into view when they receive the focus
-            domElementContainer.scrollTop = 0;
-            domElementContainer.scrollLeft = 0;
-            if (null != getLayer()) {
-                // If some layer is attached, apply the right translation given from scroll state
-                final double sh = getHorizontalScrollRate();
-                final double sv = getVerticalScrollRate();
-                applyScrollRateToLayer(sh, sv);
-            }
+        // Prevent DOMElements scrolling into view when they receive the focus
+        domElementContainer.scrollTop = 0;
+        domElementContainer.scrollLeft = 0;
+        if (null != getLayer()) {
+            // If some layer is attached, apply the right translation given from scroll state
+            final double sh = getHorizontalScrollRate();
+            final double sv = getVerticalScrollRate();
+            applyScrollRateToLayer(sh, sv);
         }
     }
 
@@ -408,14 +319,17 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         final int scrollWidth = scrollPanel.scrollWidth;
         final int clientWidth = scrollPanel.clientWidth;
         final int max = scrollWidth - clientWidth;
-        scrollPanel.scrollLeft = (max * rx) / 100;
+        final double sleft = (max * rx) / 100;
+        scrollPanel.scrollLeft = sleft;
     }
 
     private void setVerticalScrollRate(final double ry) {
+
         final int scrollHeight = scrollPanel.scrollHeight;
         final int clientHeight = scrollPanel.clientHeight;
         final int max = scrollHeight - clientHeight;
-        scrollPanel.scrollTop = (max * ry) / 100;
+        final double stop = (max * ry) / 100;
+        scrollPanel.scrollTop = stop;
     }
 
     private double calculateInternalScrollPanelWidth() {
@@ -523,14 +437,14 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         return delta == 0d ? 0d : 100 * currentY() / delta;
     }
 
-    private double currentPositionX(final double level) {
+    private double currentPositionX(final Double level) {
 
         final double position = deltaX() * level / 100;
 
         return -(minBoundX() + position);
     }
 
-    private double currentPositionY(final double level) {
+    private double currentPositionY(final Double level) {
 
         final double position = deltaY() * level / 100;
 
@@ -545,11 +459,11 @@ public class ScrollablePanel extends LienzoBoundsPanel {
         return maxBoundY() - minBoundY() - getVisibleBounds().getHeight();
     }
 
-    private double currentX() {
+    private Double currentX() {
         return -(getTransform().getTranslateX() / getTransform().getScaleX() + minBoundX());
     }
 
-    private double currentY() {
+    private Double currentY() {
         return -(getTransform().getTranslateY() / getTransform().getScaleY() + minBoundY());
     }
 
